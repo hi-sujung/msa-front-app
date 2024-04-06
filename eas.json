@@ -1,0 +1,10 @@
+{
+    "build": {
+      "simulator": {
+        "android": {
+          "buildType": "apk"
+        }
+      }
+    }
+  }
+  
