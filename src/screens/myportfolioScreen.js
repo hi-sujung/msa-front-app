@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://3.39.104.119/portfolio/';
+const API_URL = 'http://10.0.2.2:8080/portfolio/';
 
 
 export default function MyportfolioScreen({ route }) {
@@ -23,7 +23,7 @@ export default function MyportfolioScreen({ route }) {
   const [deleteButtonVisible, setDeleteButtonVisible] = useState(true);
 
  // const [portfolio, setPortfolio] = useState([]);
-  const { user, token } = useAuth(); // 현재 로그인한 유저의 user, token
+  //const { user, token } = useAuth(); // 현재 로그인한 유저의 user, token
   const navigation = useNavigation(); // Initialize navigation
   // if (!route.params || !route.params.portfolioId) {
   //   // Handle the case when portfolioId is not available

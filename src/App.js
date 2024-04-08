@@ -34,6 +34,12 @@ export default function App() {
           component={PortfolioListScreen}
           options={{ headerShown: false }}
         /> 
+        {/* 포트폴리오 생성 */}
+        <Stack.Screen
+          name="CreatePortfolio"
+          component={CreatePortfolioScreen}
+          options={{ headerShown: false }}
+        /> 
         </Stack.Navigator>
         </NavigationContainer>
       </AuthProvider>

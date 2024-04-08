@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://3.39.104.119/portfolio/new';
+const API_URL = 'http://10.0.2.2:8080/portfolio/new';
 
 
 export default function CreatePortfolioScreen() {
@@ -16,7 +16,7 @@ export default function CreatePortfolioScreen() {
   const [editedTitle, setEditedTitle] = useState('');
   const [editedSubTitle, setEditedSubTitle] = useState('');
   const [editedContent, setEditedContent] = useState('');
-  const { token } = useAuth(); // 현재 로그인한 유저의 user, token
+  // const { token } = useAuth(); // 현재 로그인한 유저의 user, token
   const navigation = useNavigation(); // Initialize navigation
 
   // useEffect(() => {
@@ -24,15 +24,15 @@ export default function CreatePortfolioScreen() {
   // }, []);
 
   const CreatePortfolioData = async (updatedData) => {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
+    // const headers = {
+    //   Authorization: `Bearer ${token}`,
+    // };
   
     try {
       const response = await axios.post(
         API_URL,
         updatedData,
-        { headers }
+        // { headers }
       );
   
       if (response.status === 200) {

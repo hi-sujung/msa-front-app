@@ -6,11 +6,11 @@ import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://3.39.104.119/portfolio/portfoliolist';
+const API_URL = 'http://10.0.2.2:8080/portfolio/portfoliolist';
 
 export default function PortfolioListScreen() {
   const [portfolioList, setPortfolioList] = useState([]);
-  const { user, token } = useAuth(); // 현재 로그인한 유저의 user, token
+  // const { user, token } = useAuth(); // 현재 로그인한 유저의 user, token
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -18,11 +18,12 @@ export default function PortfolioListScreen() {
   }, []);
 
   const fetchPortfolioData = async () => {
-    const headers = {
-      Authorization: `Bearer ${token}`
-    };
+    // const headers = {
+    //   Authorization: `Bearer ${token}`
+    // };
     try {
-      const response = await axios.get(API_URL, { headers });
+      // const response = await axios.get(API_URL, { headers });
+      const response = await axios.get(API_URL);
       if (response.status === 200) {
         setPortfolioList(response.data.data); // Set the fetched activity data in the state
       }
@@ -32,11 +33,12 @@ export default function PortfolioListScreen() {
   };
 
   const createPortfolio = async () => {
-    const headers = {
-      Authorization: `Bearer ${token}`
-    };
+    // const headers = {
+    //   Authorization: `Bearer ${token}`
+    // };
     try {
-      const response = await axios.get(API_URL, { headers });
+      // const response = await axios.get(API_URL, { headers });
+      const response = await axios.get(API_URL);
       if (response.status === 200) {
         setPortfolioList(response.data.data); // Set the fetched activity data in the state
       }
