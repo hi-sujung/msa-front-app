@@ -5,7 +5,7 @@ import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://3.39.104.119/member/join';
+const API_URL = 'http://10.0.2.2:8080/member/join';
 
 const openLink = () => {
   Linking.openURL('#');

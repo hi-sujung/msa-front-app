@@ -6,10 +6,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import EmailScreen from './../screens/EmailScreen';
 import { useAuth } from './../utils/AuthContext';
 
-const API_URL = 'http://3.39.104.119/member/login';
+const API_URL = 'http://10.0.2.2:8080/member/login';
 
 
-function LoginScreen({ navigation }) {
+// function LoginScreen({ navigation }) {
+  function LoginScreen() {
 
   const { login } = useAuth(); 
   const [email, setEmail] = useState('');
