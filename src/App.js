@@ -28,6 +28,18 @@ export default function App() {
     <AuthProvider> 
       <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
+        {/* 로그인 */}
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        /> 
+        {/* 로그인 */}
+        <Stack.Screen
+          name="Main"
+          component={MainScreen}
+          options={{ headerShown: false }}
+        /> 
         {/* 공지사항 리스트(교내활동) */}
         <Stack.Screen
           name="SchoolActList"

@@ -31,7 +31,7 @@ export default function ActivityScreen({ route }) {
   const { activityId } = route.params;
   const [activityData, setActivityData] = useState({});
   const [recActivityData, setRecActivityData] = useState([]);
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -40,14 +40,10 @@ export default function ActivityScreen({ route }) {
   }, []);
 
   const fetchActivityDetail = async () => {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
 
     try {
-      const response = await axios.get(`${API_URL}?actId=${activityId}`, {
-        headers,
-      });
+      const response = await axios.get(`${API_URL}?actId=${activityId}&memberId=${user.email}`
+      );
       if (response.status === 200) {
         setActivityData(response.data);
         console.log(response.data.isLiked);
@@ -60,23 +56,19 @@ export default function ActivityScreen({ route }) {
         setHeartFilled(true);
       }
     } catch (error) {
+      console.log(user.email)
       console.error("Error fetching activity detail:", error);
     }
   };
 
   // 좋아요 버튼
   const toggleHeart = async () => {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
 
     console.log(activityId);
     if (heartFilled === false) {
       try {
         const response1 = await axios.post(
-          `${LIKE_URL}?actId=${activityId}`,
-          null,
-          { headers }
+          `${LIKE_URL}?actId=${activityId}&memberId=${user.email}`
         );
         if (response1.status === 200) {
           console.log(response1.data);
@@ -87,9 +79,7 @@ export default function ActivityScreen({ route }) {
       }
     } else {
       try {
-        const response2 = await axios.delete(`${LIKECANCEL_URL}${activityId}`, {
-          headers,
-        });
+        const response2 = await axios.delete(`${LIKECANCEL_URL}${activityId}&memberId=${user.email}`);
         if (response2.status === 200) {
           console.log(response2.data);
           setHeartFilled(false);

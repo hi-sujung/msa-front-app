@@ -6,6 +6,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import EmailScreen from './../screens/EmailScreen';
 import { useAuth } from './../utils/AuthContext';
 
+import { useNavigation } from '@react-navigation/native';
+
 const API_URL = 'http://10.0.2.2:8080/member/login';
 
 
@@ -18,6 +20,7 @@ const API_URL = 'http://10.0.2.2:8080/member/login';
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorText, setShowErrorText] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const navigation = useNavigation();
   
 
   const handleLogin = async () => {
@@ -34,7 +37,7 @@ const API_URL = 'http://10.0.2.2:8080/member/login';
         setShowErrorText(false);
         setErrorMessage('');
         const token = response.data.token;
-        const userInfo = { id: response.data.userId, name: response.data.username };
+        const userInfo = { id: response.data.userId, name: response.data.username, email: response.data.email};
         
         login(token, userInfo);
 
