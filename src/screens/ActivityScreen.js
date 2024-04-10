@@ -6,11 +6,11 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from './../utils/AuthContext';
 
-const API_URL = 'http://3.39.104.119/externalact/id';
-const R_API_URL = 'http://3.39.104.119:8000/recommend/external?activity_name=';
+const API_URL = 'http://10.0.2.2:8080/externalact/id';
+const R_API_URL = 'http://10.0.2.2:8080/recommend/external?activity_name=';
 
-const LIKE_URL = 'http://3.39.104.119/externalact/like'
-const LIKECANCEL_URL = 'http://3.39.104.119/externalact/likecancel?id='
+const LIKE_URL = 'http://10.0.2.2:8080/externalact/like'
+const LIKECANCEL_URL = 'http://10.0.2.2:8080/externalact/likecancel?id='
 
 export default function ActivityScreen({ route }) {
     const [initialLikedState, setInitialLikedState] = useState(false);

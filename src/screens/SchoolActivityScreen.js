@@ -1,216 +1,303 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Button } from 'react-native'; // Import TouchableOpacity
-import { LinearGradient } from 'expo-linear-gradient';
-import { AntDesign } from '@expo/vector-icons';
-import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
-import { useAuth } from './../utils/AuthContext';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Button,
+} from "react-native"; // Import TouchableOpacity
+import { LinearGradient } from "expo-linear-gradient";
+import { AntDesign } from "@expo/vector-icons";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "./../utils/AuthContext";
 
-const API_URL = 'http://3.39.104.119/univactivity/id';
-const R_API_URL = 'http://3.39.104.119:8000/recommend/univ?activity_name=';
+const API_URL = "http://10.0.2.2:8080/notice/univactivity/id";
+const R_API_URL = "http://10.0.2.2:8080/recommend/univ?activity_name=";
 
-const LIKE_URL = 'http://3.39.104.119/univactivity/like';
-const LIKECANCEL_URL = 'http://3.39.104.119/univactivity/likecancel?id=';
+const LIKE_URL = "http://10.0.2.2:8080/notice/univactivity/like";
+const LIKECANCEL_URL =
+  "http://10.0.2.2:8080/notice/univactivity/likecancel?id=";
+
+const ATTEND_URL = "http://10.0.2.2:8080/notice/univactivity/attend";
+const ATTENDCANCEL_URL =
+  "http://10.0.2.2:8080/notice/univactivity/attendcancel?id=";
 
 export default function ActivityScreen({ route }) {
-    const [initialLikedState, setInitialLikedState] = useState(false);
-    const [heartFilled, setHeartFilled] = useState('');
-    const { activityId } = route.params;
-    const [activityData, setActivityData] = useState({});
-    const [recActivityData, setRecActivityData] = useState([]);
-    const { token } = useAuth();
-    const navigation = useNavigation();
-  
-    useEffect(() => {
-      fetchActivityDetail();
-      fetchRecActivityDetail();
-    }, []);
-  
-    const fetchActivityDetail = async () => {
-        const headers = {
-            Authorization: `Bearer ${token}`
-          };
+  const [initialLikedState, setInitialLikedState] = useState(false);
+  const [heartFilled, setHeartFilled] = useState("");
+  const [attendFilled, setAttendFilled] = useState("");
+  const { activityId } = route.params;
+  const [activityData, setActivityData] = useState({});
+  const [recActivityData, setRecActivityData] = useState([]);
+  const { token } = useAuth();
+  const navigation = useNavigation();
 
-          try {
-            const response = await axios.get(`${API_URL}?actId=${activityId}`, { headers });
-            if (response.status === 200) {
-              setActivityData(response.data);
-              console.log(response.data.isLiked);
-              setInitialLikedState(response.data.isLiked === 1);
-              setHeartFilled(response.data.isLiked === 1);
-            }
-            if (activityData.isLiked === 0) {
-              setHeartFilled(false);
-            }
-            else if (activityData.isLiked === 1) {
-              setHeartFilled(true);
-            }
-          } catch (error) {
-            console.error('Error fetching activity detail:', error);
-          }
-      
+  useEffect(() => {
+    fetchActivityDetail();
+    fetchRecActivityDetail();
+  }, []);
+
+  const fetchActivityDetail = async () => {
+    const headers = {
+      Authorization: `Bearer ${token}`,
     };
 
-    const toggleHeart = async () => {
+    try {
+      const response = await axios.get(`${API_URL}?actId=${activityId}`, {
+        headers,
+      });
+      if (response.status === 200) {
+        setActivityData(response.data);
+        console.log(response.data.isLiked);
+        setInitialLikedState(response.data.isLiked === 1);
+        setHeartFilled(response.data.isLiked === 1);
+      }
+      if (activityData.isLiked === 0) {
+        setHeartFilled(false);
+      } else if (activityData.isLiked === 1) {
+        setHeartFilled(true);
+      }
+    } catch (error) {
+      console.error("Error fetching activity detail:", error);
+    }
+  };
 
-      const headers = {
-        Authorization: `Bearer ${token}`
-      };
-  
-      console.log(activityId)
-      if (heartFilled === false) {
-        try {
-          const response1 = await axios.post(`${LIKE_URL}?actId=${activityId}`, null, {  headers });
+  // 좋아요 버튼
+  const toggleHeart = async () => {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    console.log(activityId);
+    if (heartFilled === false) {
+      try {
+        const response1 = await axios.post(
+          `${LIKE_URL}?actId=${activityId}`,
+          null,
+          { headers }
+        );
         if (response1.status === 200) {
           console.log(response1.data);
           setHeartFilled(true);
         }
-  
-        } catch(error) {
-          console.error('Error fetching like:', error);
-        }
+      } catch (error) {
+        console.error("Error fetching like:", error);
       }
-      else {
-        try{
-        const response2 = await axios.delete(`${LIKECANCEL_URL}${activityId}`,{ headers });
+    } else {
+      try {
+        const response2 = await axios.delete(`${LIKECANCEL_URL}${activityId}`, {
+          headers,
+        });
         if (response2.status === 200) {
           console.log(response2.data);
           setHeartFilled(false);
         }
-        }catch(error) {
-          console.error('Error fetching delete like cancel:', error);
-        }
+      } catch (error) {
+        console.error("Error fetching delete like cancel:", error);
       }
-  
-      navigation.navigate('SchoolAct', { activityId: activityData.id })
-    
+    }
+
+    navigation.navigate("SchoolActivity", { activityId: activityData.id });
+  };
+
+  // 참여 버튼
+  const toggleAttend = async () => {
+    const headers = {
+      Authorization: `Bearer ${token}`,
     };
 
-    // Frommated Content
-    const handleReplace = () => {
-      if (activityData && activityData.content) {
-        return activityData.content.replaceAll('\\n', "\n");
-      } else {
-        console.log('activityData or content is undefined');
-        return '';
+    console.log(activityId);
+    if (attendFilled === false) {
+      try {
+        const response1 = await axios.post(
+          `${ATTEND_URL}?actId=${activityId}`,
+          null,
+          { headers }
+        );
+        if (response1.status === 200) {
+          console.log(response1.data);
+          setAttendFilled(true);
+        }
+      } catch (error) {
+        console.error("Error fetching attendance info:", error);
       }
-    };
-    const formattedContent = handleReplace();
+    } else {
+      try {
+        const response2 = await axios.delete(
+          `${ATTENDCANCEL_URL}${activityId}`,
+          { headers }
+        );
+        if (response2.status === 200) {
+          console.log(response2.data);
+          setAttendFilled(false);
+        }
+      } catch (error) {
+        console.error("Error fetching delete attendance info:", error);
+      }
+    }
+
+    navigation.navigate("SchoolActivity", { activityId: activityData.id });
+  };
+
+  // Frommated Content
+  const handleReplace = () => {
+    if (activityData && activityData.content) {
+      return activityData.content.replaceAll("\\n", "\n");
+    } else {
+      console.log("activityData or content is undefined");
+      return "";
+    }
+  };
+  const formattedContent = handleReplace();
 
   // Get List of Recommend System
   const fetchRecActivityDetail = async () => {
-
     try {
       const response = await axios.get(`${R_API_URL}${activityId}`);
       if (response.status === 200) {
         setRecActivityData(response.data);
-        console.log(response.data)
+        console.log(response.data);
       }
     } catch (error) {
-      console.error('Error fetching Rec activity detail:', error);
+      console.error("Error fetching Rec activity detail:", error);
     }
 
-    navigation.navigate('SchoolAct', { activityId: activityData.id })
-    
+    navigation.navigate("SchoolActivity", { activityId: activityData.id });
   };
 
-    const handleActListPress = () => {
-        navigation.navigate('SchoolActList'); 
-      };
+  const handleActListPress = () => {
+    navigation.navigate("SchoolActList");
+  };
 
-      const handleActivityPress = () => {
-        navigation.navigate('SchoolAct');
-      };
+  const handleActivityPress = () => {
+    navigation.navigate("SchoolActivity");
+  };
 
-      const handleHomePress = () => {
-        navigation.navigate('Main'); 
-      };
+  const handleHomePress = () => {
+    navigation.navigate("Main");
+  };
 
-      return (
-        <View style={styles.container}>
-  <LinearGradient
-    colors={['#E2D0F8', '#A0BFE0']}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 1 }}
-    style={styles.linearGradient}
-  >
-    <View style={styles.header}>
-      <TouchableOpacity onPress={handleHomePress} style={styles.homeButton}>
-        <AntDesign name="home" size={24} color="rgba(74, 85, 162, 1)" />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleActListPress}>
-        <Text style={styles.headerTitle}>게시물 목록</Text>
-      </TouchableOpacity>
-    </View>
-  </LinearGradient>
-  <View style={styles.nav}>
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.navContent}>
-      <TouchableOpacity style={styles.navButton}>
-        <Text style={styles.navButtonText}>전체</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.navButton}>
-        <Text style={styles.navButtonText}>기획</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.navButton}>
-        <Text style={styles.navButtonText}>아이디어</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.navButton}>
-        <Text style={styles.navButtonText}>브랜드/네이밍</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.navButton}>
-        <Text style={styles.navButtonText}>광고/마케팅</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.navButton}>
-        <Text style={styles.navButtonText}>사진</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.navButton}>
-        <Text style={styles.navButtonText}>개발/프로그래밍</Text>
-      </TouchableOpacity>
-    </ScrollView>
-  </View>
-
-  <View style={styles.main}>
-    <ScrollView contentContainerStyle={styles.activityList}>
-      <View style={styles.activityItem}>
-        <View style={styles.activityDetails}>
-          <Text style={styles.activityCategory}>공지사항</Text>
-          {/* <Text style={styles.activityDday}>D-10</Text> */}
+  return (
+    <View style={styles.container}>
+      <LinearGradient
+        colors={["#E2D0F8", "#A0BFE0"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.linearGradient}
+      >
+        <View style={styles.header}>
+          <TouchableOpacity onPress={handleHomePress} style={styles.homeButton}>
+            <AntDesign name="home" size={24} color="rgba(74, 85, 162, 1)" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleActListPress}>
+            <Text style={styles.headerTitle}>게시물 목록</Text>
+          </TouchableOpacity>
         </View>
-        <ScrollView>
-          <Text style={styles.activityItemTitle}>{activityData.title}</Text>
-          <Text style={styles.activityDescription}>게시일: {activityData.startDate}</Text>
-          <Text style={styles.activitySubTitle}>{activityData.link}</Text>
-          <Text style={styles.activityDescription}>{activityData.postDepartment}</Text>
-          
+      </LinearGradient>
+      <View style={styles.nav}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.navContent}
+        >
+          <TouchableOpacity style={styles.navButton}>
+            <Text style={styles.navButtonText}>전체</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navButton}>
+            <Text style={styles.navButtonText}>기획</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navButton}>
+            <Text style={styles.navButtonText}>아이디어</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navButton}>
+            <Text style={styles.navButtonText}>브랜드/네이밍</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navButton}>
+            <Text style={styles.navButtonText}>광고/마케팅</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navButton}>
+            <Text style={styles.navButtonText}>사진</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navButton}>
+            <Text style={styles.navButtonText}>개발/프로그래밍</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
-    </ScrollView>
 
-    <TouchableOpacity style={styles.heartButton} onPress={toggleHeart}>
-      <AntDesign
-        name={heartFilled ? 'heart' : 'hearto'}
-        size={20}
-        color={heartFilled ? 'red' : 'black'}
-      />
-    </TouchableOpacity>
+      <View style={styles.main}>
+        <ScrollView contentContainerStyle={styles.activityList}>
+          <View style={styles.activityItem}>
+            <View style={styles.activityDetails}>
+              <Text style={styles.activityCategory}>공지사항</Text>
+              {/* <Text style={styles.activityDday}>D-10</Text> */}
+            </View>
+            <ScrollView>
+              <Text style={styles.activityItemTitle}>{activityData.title}</Text>
+              <Text style={styles.activityDescription}>
+                게시일: {activityData.startDate}
+              </Text>
+              <Text style={styles.activitySubTitle}>{activityData.link}</Text>
+              <Text style={styles.activityDescription}>
+                {activityData.postDepartment}
+              </Text>
+            </ScrollView>
+          </View>
+        </ScrollView>
 
-    {/* 추천 게시물 */}
-    <View style={styles.recommended}>
-      <Text style={styles.recommendedTitle}>추천 게시물</Text>
-      <ScrollView>
-      {recActivityData.map(item => (
-        <TouchableOpacity style={styles.recommendedItem} onPress={() => navigation.push('SchoolAct', { activityId: item.univ_activity_id })}>
-          <Text style={styles.recommendedItemTitle}>{item.title}</Text>
-        </TouchableOpacity>
-      ))}
-      </ScrollView>
-      
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.heartButton} onPress={toggleHeart}>
+            <AntDesign
+              name={heartFilled ? "heart" : "hearto"}
+              size={20}
+              color={heartFilled ? "red" : "black"}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.attendButton,
+              {
+                backgroundColor: attendFilled
+                  ? "grey"
+                  : "rgba(153, 153, 255, 0.3)",
+              },
+            ]}
+            onPress={toggleAttend}
+          >
+            <Text
+              style={[
+                styles.buttonText,
+                { color: attendFilled ? "black" : "white" },
+              ]}
+            >
+              {attendFilled ? "참여 취소" : "참여"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* 추천 게시물 */}
+        <View style={styles.recommended}>
+          <Text style={styles.recommendedTitle}>추천 게시물</Text>
+          <ScrollView>
+            {recActivityData.map((item) => (
+              <TouchableOpacity
+                style={styles.recommendedItem}
+                onPress={() =>
+                  navigation.push("SchoolActivity", {
+                    activityId: item.univ_activity_id,
+                  })
+                }
+              >
+                <Text style={styles.recommendedItemTitle}>{item.title}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      </View>
     </View>
-  </View>
-</View>
-
-      );
-      
+  );
 }
 
 const styles = StyleSheet.create({
@@ -219,41 +306,41 @@ const styles = StyleSheet.create({
   },
   linearGradient: {
     borderBottomWidth: 1,
-    borderBottomColor: 'white',
+    borderBottomColor: "white",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
-  
+
   homeButton: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
   headerTitle: {
-    color: 'black',
+    color: "black",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginLeft: 10,
   },
   nav: {
     height: 80,
     borderBottomWidth: 1,
-    borderBottomColor: 'white',
-    overflow: 'hidden',
+    borderBottomColor: "white",
+    overflow: "hidden",
   },
   navContent: {
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
   navButton: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
     paddingVertical: 8,
     paddingHorizontal: 15,
@@ -261,53 +348,53 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   navButtonText: {
-    color: 'rgba(74, 85, 162, 1)',
-    fontWeight: 'bold',
+    color: "rgba(74, 85, 162, 1)",
+    fontWeight: "bold",
   },
   main: {
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   activityList: {
-    flexDirection: 'column',
-    alignItems: 'stretch',
+    flexDirection: "column",
+    alignItems: "stretch",
     // height: 1200, // Adjusted height to make room for recommended items
   },
   activityItem: {
-    width: '100%',
-    backgroundColor: 'rgba(226, 208, 248, 0.3)',
+    width: "100%",
+    backgroundColor: "rgba(226, 208, 248, 0.3)",
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 15,
     marginBottom: 10,
   },
   activityDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 5,
   },
   activityCategory: {
-    fontWeight: 'bold',
-    color: 'rgba(74, 85, 162, 1)',
+    fontWeight: "bold",
+    color: "rgba(74, 85, 162, 1)",
   },
   activityDday: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   activityItemTitle: {
-    paddingTop:10,
-    fontWeight: 'bold',
+    paddingTop: 10,
+    fontWeight: "bold",
     fontSize: 16,
   },
   activitySubTitle: {
     fontSize: 14,
-    color: 'rgba(74, 85, 162, 1)',
-    marginTop:5,
+    color: "rgba(74, 85, 162, 1)",
+    marginTop: 5,
     marginBottom: 5,
   },
   activityDescription: {
-    paddingTop:10,
+    paddingTop: 10,
     fontSize: 14,
   },
   recommended: {
@@ -318,26 +405,37 @@ const styles = StyleSheet.create({
   },
   recommendedTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   recommendedItem: {
-    backgroundColor: 'rgba(226, 208, 248, 0.3)',
+    backgroundColor: "rgba(226, 208, 248, 0.3)",
     borderRadius: 10,
     paddingVertical: 8,
     paddingHorizontal: 12,
     marginBottom: 5,
   },
   recommendedItemTitle: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 14,
   },
   recommendedItemDate: {
     fontSize: 12,
-    color: 'rgba(74, 85, 162, 1)',
+    color: "rgba(74, 85, 162, 1)",
   },
   heartButton: {
-    // marginTop: 10,
-    alignItems: 'flex-end',
+    marginTop: 10,
+    // alignItems: "flex-end",
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10, // 버튼들 사이의 간격 조절
+  },
+  attendButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 20, // 둥근 모서리
+    elevation: 5, // 그림자
   },
 });

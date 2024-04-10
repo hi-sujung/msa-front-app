@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 
-const API_URL = 'http://3.39.104.119/univactivity/';
+const API_URL = 'http://10.0.2.2:8080/notice/univactivity/';
 const SEARCH_API_URL = 'http://3.39.104.119/univactivity/keyword?keyword=';
 const SEARCHD_API_URL = 'http://3.39.104.119/univactivity/department?department=';
 const SEARCHALL_API_URL = 'http://3.39.104.119/univactivity/department/keyword';
@@ -191,7 +191,7 @@ export default function SchoolActListScreen({route}) {
       renderItem={({ item }) => (
         <TouchableOpacity
           style={styles.activityItem}
-          onPress={() => navigation.navigate('SchoolAct', { activityId: item.id })} // Pass the activityId to the 'Activity' screen
+          onPress={() => navigation.navigate('SchoolActivity', { activityId: item.id })} // Pass the activityId to the 'Activity' screen
         >
           <View style={styles.activityDetails}>
             <Text style={styles.activityCategory}>공지사항</Text>
