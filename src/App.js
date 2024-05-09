@@ -19,6 +19,8 @@ import PortfolioListScreen from './screens/PortfolioListScreen';
 import viewNoticeLike from './screens/viewNoticeLike';
 import ChatScreen from './screens/ChatScreen';
 import CreatePortfolioScreen from './screens/CreatePortfolioScreen';
+import AutoPortfolioScreen from './screens/AutoPortfolioScreen';
+import AutoPortfolioListScreen from './screens/AutoPortfolioListScreen';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +34,18 @@ export default function App() {
         <Stack.Screen
           name="Login"
           component={LoginScreen}
+          options={{ headerShown: false }}
+        /> 
+        {/* 자동 생성된 포트폴리오 리스트 */}
+        <Stack.Screen
+          name="AutoPortfolioList"
+          component={AutoPortfolioListScreen}
+          options={{ headerShown: false }}
+        /> 
+        {/* 자동 생성 포트폴리오 */}
+        <Stack.Screen
+          name="AutoPortfolioScreen"
+          component={AutoPortfolioScreen}
           options={{ headerShown: false }}
         /> 
         {/* 로그인 */}

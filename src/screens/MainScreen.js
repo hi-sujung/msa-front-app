@@ -29,7 +29,7 @@ export default function MainScreen({ navigation }) {
       <View style={styles.container}>
         <View style={styles.outerBox}>
           <View style={styles.row}>
-            <TouchableOpacity onPress={() => navigation.navigate('PortfolioList')} style={[styles.button, styles.firstButton, { backgroundColor: '#CCA1FF', borderColor: 'transparent' }]}>
+            <TouchableOpacity onPress={() => navigation.navigate('AutoPortfolioList')} style={[styles.button, styles.firstButton, { backgroundColor: '#CCA1FF', borderColor: 'transparent' }]}>
               <Text style={styles.buttonText}>포트폴리오 {'\n'} 관리</Text>
             </TouchableOpacity>
             <View style={styles.buttonGroup}>

@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://10.0.2.2:8080/portfolio/portfoliolist';
+const API_URL = 'http://10.0.2.2:8080/portfolio/portfoliolist'; // API 수정 필요
 
 export default function PortfolioListScreen() {
   const [portfolioList, setPortfolioList] = useState([]);
@@ -18,6 +18,9 @@ export default function PortfolioListScreen() {
   }, []);
 
   const fetchPortfolioData = async () => {
+    // const headers = {
+    //   Authorization: `Bearer ${token}`
+    // };
     try {
       // const response = await axios.get(API_URL, { headers });
       const response = await axios.get(`${API_URL}?memberId=${user.email}`);
@@ -74,7 +77,7 @@ export default function PortfolioListScreen() {
                 <AntDesign name="home" size={24} color="rgba(74, 85, 162, 1)" />
               </TouchableOpacity>
               <TouchableOpacity>
-                <Text style={styles.headerTitle}>나의 포트폴리오 목록</Text>
+                <Text style={styles.headerTitle}>자동 생성된 포트폴리오 목록</Text>
                 </TouchableOpacity>
                 
             </View>
