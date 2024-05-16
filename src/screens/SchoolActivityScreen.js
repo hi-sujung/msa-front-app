@@ -94,17 +94,13 @@ export default function ActivityScreen({ route }) {
 
   // 참여 버튼
   const toggleAttend = async () => {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
 
     console.log(activityId);
     if (attendFilled === false) {
       try {
         const response1 = await axios.post(
-          `${ATTEND_URL}?actId=${activityId}`,
-          null,
-          { headers }
+          `${ATTEND_URL}?actId=${activityId}&memberId=${user.email}`,
+          null
         );
         if (response1.status === 200) {
           console.log(response1.data);
@@ -116,8 +112,7 @@ export default function ActivityScreen({ route }) {
     } else {
       try {
         const response2 = await axios.delete(
-          `${ATTENDCANCEL_URL}${activityId}`,
-          { headers }
+          `${ATTENDCANCEL_URL}${activityId}&memberId=${user.email}`
         );
         if (response2.status === 200) {
           console.log(response2.data);

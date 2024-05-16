@@ -16,12 +16,14 @@ export default function MyportfolioScreen({ route }) {
   // const [username, setUsername] = useState('');
   const [navigationButtons, setNavigationButtons] = useState([]);
   const [selectedButton, setSelectedButton] = useState(null);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [editedTitle, setEditedTitle] = useState('');
-  const [editedSubTitle, setEditedSubTitle] = useState('');
-  const [editedContent, setEditedContent] = useState('');
+  // const [isEditMode, setIsEditMode] = useState(false);
+  // const [editedTitle, setEditedTitle] = useState('');
+  // const [editedSubTitle, setEditedSubTitle] = useState('');
+  // const [editedContent, setEditedContent] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [deleteButtonVisible, setDeleteButtonVisible] = useState(true);
+
+  const [isKeeped, setKeeped] = useState(false);
 
  // const [portfolio, setPortfolio] = useState([]);
   //const { user, token } = useAuth(); // 현재 로그인한 유저의 user, token
@@ -48,28 +50,28 @@ export default function MyportfolioScreen({ route }) {
     }
   };
 
-  // 포트폴리오 편집
-const EditPortfolioData = async (updatedData) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
+//   // 포트폴리오 편집
+// const EditPortfolioData = async (updatedData) => {
+//   const headers = {
+//     Authorization: `Bearer ${token}`,
+//   };
 
-  try {
-    const response = await axios.post(
-      `${API_URL}update/id?id=${portfolioId}`,
-      updatedData,
-      { headers }
-    );
+//   try {
+//     const response = await axios.post(
+//       `${API_URL}update/id?id=${portfolioId}`,
+//       updatedData,
+//       { headers }
+//     );
 
-    if (response.status === 200) {
-      console.log('포트폴리오 수정 완료');
-    } else {
-      console.error('포트폴리오 수정 실패:', response.status);
-    }
-  } catch (error) {
-    console.error('포트폴리오 수정 에러:', error);
-  }
-};
+//     if (response.status === 200) {
+//       console.log('포트폴리오 수정 완료');
+//     } else {
+//       console.error('포트폴리오 수정 실패:', response.status);
+//     }
+//   } catch (error) {
+//     console.error('포트폴리오 수정 에러:', error);
+//   }
+// };
 
   // 포트폴리오 삭제
   const deletePortfolioData = async () => {
@@ -89,6 +91,46 @@ const EditPortfolioData = async (updatedData) => {
       }
     } catch (error) {
       console.error('Error deleting portfolio:', error);
+    }
+  };
+
+  // 보관 버튼
+  const toggleKeep = async (newData) => {
+
+    console.log(activityId);
+    if (isKeeped === false) {
+      const response = await axios.post(
+        CREATE_API_URL,
+        newData
+      );
+  
+      if (response.status === 200) {
+        console.log('포트폴리오 보관 완료');
+        setKeeped(true);
+        Alert.alert('포트폴리오가 보관되었습니다.');
+        handleHomePress();
+      } else {
+        console.error('포트폴리오 보관 실패:', response.status);
+      }
+    } catch (error) {
+      console.error('포트폴리오 보관 에러:', error);
+    }
+
+    navigation.navigate("Myportfolio", { portfolioId: portfolioData.id });
+  };
+
+  const handleKeepButton = async () => {
+    const updatedButton = {
+      title: portfolioData.title,       // 자동 생성된 제목
+      urlLink: portfolioData.urlLink, // 자동 생성된 부제목
+      description: portfolioData.description,   // 자동 생성된 내용
+    };
+  
+    try {
+      await toggleKeep(updatedButton); // 서버에 수정된 데이터를 저장
+      setNavigationButtons([...navigationButtons.map((button) => (button === selectedButton ? updatedButton : button))]); // 수정된 버튼 정보를 업데이트
+    } catch (error) {
+      console.error('포트폴리오 보관 에러:', error);
     }
   };
 
@@ -129,36 +171,7 @@ const EditPortfolioData = async (updatedData) => {
     setEditedContent(text);
     console.log('내용 업데이트');
   };
-
-  const handleEditButtonClick = () => {
-    setIsEditMode(true); // "수정" 버튼 클릭 시 편집 모드 활성화
-    setDeleteButtonVisible(false); // "삭제" 버튼 숨김
-    // setEditedTitle(portfolioData.title); // 편집 중인 타이틀 초기화
-  };
-
-  const handleSaveButtonClick = () => {
-    // 저장 버튼 클릭 시 편집 모드 비활성화 등의 처리
-    setIsEditMode(false);
-    setDeleteButtonVisible(true);
-  };
-
-  const handleSaveButton = async () => {
-    const updatedButton = {
-      title: editedTitle,       // 사용자가 편집한 제목
-      urlLink: editedSubTitle, // 사용자가 편집한 부제목
-      description: editedContent,   // 사용자가 편집한 내용
-    };
   
-    try {
-      await EditPortfolioData(updatedButton); // 서버에 수정된 데이터를 저장
-      setNavigationButtons([...navigationButtons.map((button) => (button === selectedButton ? updatedButton : button))]); // 수정된 버튼 정보를 업데이트
-      setIsEditMode(false); // 편집 모드 비활성화
-      fetchPortfolioData(); // 수정된 내용을 다시 불러옴
-    } catch (error) {
-      console.error('포트폴리오 수정 에러:', error);
-    }
-  };
-
   const handleHomePress = () => {
     navigation.navigate('Main'); 
   };
@@ -217,59 +230,21 @@ const EditPortfolioData = async (updatedData) => {
 
       <View style={styles.main}>
         <View style={styles.portfolioInfo}>
-          {isEditMode ? ( // 편집 모드일 때
-            <TextInput
-              style={styles.portfolioName}
-              value={editedTitle}
-              onChangeText={handleTitleChange}
-             />
-            ) : ( // 편집 모드가 아닐 때
            <Text style={styles.portfolioName}>{portfolioData.title}</Text>
-           )}
           <TouchableOpacity style={styles.editButton} onPress={toggleEditMode}>
             <Text
             style={styles.editButtonText}
-            onPress={isEditMode ? handleSaveButtonClick : handleEditButtonClick}
-            >{isEditMode ? '완료' : '수정'}</Text>
+            onPress={toggleKeep}
+            >{isKeeped ? '보관' : '보관됨'}</Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.name}>{user.name} 수정 </Text>
         <Text style={styles.infoLabel}>포트폴리오 제목</Text>
-        {isEditMode ? ( // 편집 모드일 때
-        <TextInput
-          style={styles.infoInput}
-          value={editedTitle}
-          // onChangeText={handleTitleChange}
-          onChangeText={setEditedTitle}
-        />
-      ) : ( // 편집 모드가 아닐 때
         <Text style={styles.infoInput}>{portfolioData.title}</Text>
-      )}
         <Text style={styles.infoLabel}>포트폴리오 링크</Text>
-        {isEditMode ? ( // 편집 모드일 때
-        <TextInput
-          style={styles.infoInput}
-          value={editedSubTitle}
-          // onChangeText={handleSubTitleChange}
-          onChangeText={setEditedSubTitle}
-        />
-      ) : ( // 편집 모드가 아닐 때
         <Text style={styles.infoInput}>{portfolioData.urlLink}</Text>
-      )}
         <Text style={styles.infoLabel}>내용</Text>
-        {isEditMode ? ( // 편집 모드일 때
-        <TextInput
-          style={styles.bigInfoInput}
-          multiline
-          numberOfLines={4}
-          value={editedContent}
-          // onChangeText={handleContentChange}
-          onChangeText={setEditedContent}
-          editable={isEditMode}
-        />
-      ) : ( // 편집 모드가 아닐 때
         <Text style={styles.bigInfoInput}>{portfolioData.description}</Text>
-      )}
 
           {deleteButtonVisible && (
           <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
@@ -301,9 +276,9 @@ const EditPortfolioData = async (updatedData) => {
               style={[styles.saveButton]} // Combine styles
               >
                 
-          <TouchableOpacity style={styles.saveButton} onPress={handleSaveButton}>
+          {/* <TouchableOpacity style={styles.saveButton} onPress={handleSaveButton}>
             <Text style={styles.saveButtonText}>저장하기</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           </LinearGradient>
         )}
           
