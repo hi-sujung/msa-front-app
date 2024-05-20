@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://10.0.2.2:8080/portfolio/portfoliolist'; // API 수정 필요
+const API_URL = 'http://10.0.2.2:8080/notice/univactivity/checked-list';
 
 export default function PortfolioListScreen() {
   const [portfolioList, setPortfolioList] = useState([]);
@@ -18,17 +18,14 @@ export default function PortfolioListScreen() {
   }, []);
 
   const fetchPortfolioData = async () => {
-    // const headers = {
-    //   Authorization: `Bearer ${token}`
-    // };
     try {
-      // const response = await axios.get(API_URL, { headers });
-      const response = await axios.get(`${API_URL}?memberId=${user.email}`);
+      // const response = await axios.get(`${API_URL}?memberId=${user.email}`);
+      const response = await axios.get(`${API_URL}?memberId=20211021@sungshin.ac.kr`);
       if (response.status === 200) {
-        setPortfolioList(response.data.data); // Set the fetched activity data in the state
+        setPortfolioList(response.data); // Set the fetched activity data in the state
       }
     } catch (error) {
-      console.error('Error fetching activity data:', error);
+      console.error('해당 참여 공지사항 불러오기 오류:', error);
     }
   };
 
@@ -77,16 +74,13 @@ export default function PortfolioListScreen() {
                 <AntDesign name="home" size={24} color="rgba(74, 85, 162, 1)" />
               </TouchableOpacity>
               <TouchableOpacity>
-                <Text style={styles.headerTitle}>자동 생성된 포트폴리오 목록</Text>
+                <Text style={styles.headerTitle}>참여한 공지사항 목록</Text>
                 </TouchableOpacity>
                 
             </View>
           </LinearGradient>
     
           <View style={styles.main}>
-          <TouchableOpacity style={styles.navButtonPlus} onPress={() => navigation.navigate('CreatePortfolio')}>
-              <Text style={styles.navButtonTextPlus}>추가</Text>
-            </TouchableOpacity>
               <FlatList
                 data={portfolioList}
                 keyExtractor={(item) => item.id.toString()} // Assuming 'id' is a unique identifier
@@ -96,14 +90,10 @@ export default function PortfolioListScreen() {
                     onPress={() => navigation.navigate('myportfolio', { portfolioId: item.id })} // Pass the activityId to the 'Activity' screen
                   >
                     <View style={styles.activityDetails}>
-                      <Text style={styles.activityCategory}>포트폴리오</Text>
+                      <Text style={styles.activityCategory}>참여한 공지사항</Text>
                       {/* <Text style={styles.activityDday}>D-10</Text> */}
                     </View>
                     <Text style={styles.activityItemTitle}>{item.title}</Text>
-                    <Text style={styles.activityDetails}>{item.description}</Text>
-                    <Text style={styles.activityItemTitle}>{item.urlLink}</Text>
-                    <Text style={styles.activityDday}>{item.createdDate}</Text>
-                    <Text style={styles.activityDday}>{item.modifiedDate}</Text>
                   </TouchableOpacity>
                 )}
               />

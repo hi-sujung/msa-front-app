@@ -5,8 +5,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
-const API_URL = 'http://3.39.104.119/externalact/';
-const SEARCH_API_URL = 'http://3.39.104.119/externalact/keyword';
+const API_URL = 'http://10.0.2.2:8080/notice/externalact/';
+const SEARCH_API_URL = 'http://10.0.2.2:8080/notice/externalact/keyword';
 
 export default function ActListScreen({route}) {
     //const searchData = route.params;
@@ -37,6 +37,7 @@ export default function ActListScreen({route}) {
           const response = await axios.get(API_URL);
           if (response.status === 200) {
             setActivity(response.data); // Set the fetched activity data in the state
+            console.log("대외활동 리스트 불러오기")
           }
         } catch (error) {
           console.error('Error fetching activity data:', error);

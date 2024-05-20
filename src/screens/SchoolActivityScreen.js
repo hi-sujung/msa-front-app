@@ -20,9 +20,9 @@ const LIKE_URL = "http://10.0.2.2:8080/notice/univactivity/like";
 const LIKECANCEL_URL =
   "http://10.0.2.2:8080/notice/univactivity/likecancel?id=";
 
-const ATTEND_URL = "http://10.0.2.2:8080/notice/univactivity/attend";
+const ATTEND_URL = "http://10.0.2.2:8080/notice/univactivity/check";
 const ATTENDCANCEL_URL =
-  "http://10.0.2.2:8080/notice/univactivity/attendcancel?id=";
+  "http://10.0.2.2:8080/notice/univactivity/check-cancel?id=";
 
 export default function ActivityScreen({ route }) {
   const [initialLikedState, setInitialLikedState] = useState(false);
@@ -42,18 +42,22 @@ export default function ActivityScreen({ route }) {
   const fetchActivityDetail = async () => {
 
     try {
-      const response = await axios.get(`${API_URL}?actId=${activityId}&memberId=${user.email}`
+      // const response = await axios.get(`${API_URL}?actId=${activityId}&memberId=${user.email}`
+      const response = await axios.get(`${API_URL}?actId=${activityId}&memberId=20211021@sungshin.ac.kr`
       );
       if (response.status === 200) {
         setActivityData(response.data);
         console.log(response.data.isLiked);
         setInitialLikedState(response.data.isLiked === 1);
         setHeartFilled(response.data.isLiked === 1);
+        setAttendFilled(response.data.isLiked === 1);
       }
       if (activityData.isLiked === 0) {
         setHeartFilled(false);
+        setAttendFilled(false);
       } else if (activityData.isLiked === 1) {
         setHeartFilled(true);
+        setAttendFilled(true);
       }
     } catch (error) {
       console.log(user.email)
@@ -99,8 +103,7 @@ export default function ActivityScreen({ route }) {
     if (attendFilled === false) {
       try {
         const response1 = await axios.post(
-          `${ATTEND_URL}?actId=${activityId}&memberId=${user.email}`,
-          null
+          `${ATTEND_URL}?actId=${activityId}&memberId=20211021@sungshin.ac.kr`
         );
         if (response1.status === 200) {
           console.log(response1.data);
@@ -112,7 +115,7 @@ export default function ActivityScreen({ route }) {
     } else {
       try {
         const response2 = await axios.delete(
-          `${ATTENDCANCEL_URL}${activityId}&memberId=${user.email}`
+          `${ATTENDCANCEL_URL}${activityId}&memberId=20211021@sungshin.ac.kr`
         );
         if (response2.status === 200) {
           console.log(response2.data);
@@ -239,7 +242,8 @@ export default function ActivityScreen({ route }) {
               color={heartFilled ? "red" : "black"}
             />
           </TouchableOpacity>
-
+          
+          {/* 참여 버튼 */}
           <TouchableOpacity
             style={[
               styles.attendButton,
