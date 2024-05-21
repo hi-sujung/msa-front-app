@@ -19,8 +19,6 @@ import PortfolioListScreen from './screens/PortfolioListScreen';
 import viewNoticeLike from './screens/viewNoticeLike';
 import ChatScreen from './screens/ChatScreen';
 import CreatePortfolioScreen from './screens/CreatePortfolioScreen';
-import AutoPortfolioScreen from './screens/AutoPortfolioScreen';
-import AutoPortfolioListScreen from './screens/AutoPortfolioListScreen';
 import AttendSchoolActListScreen from './screens/AttendSchoolActListScreen';
 import AttendActListScreen from './screens/AttendActListScreen';
 
@@ -32,16 +30,16 @@ export default function App() {
     <AuthProvider> 
       <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
-        {/* 자동 생성 포트폴리오 */}
-        {/* <Stack.Screen
-          name="AutoPortfolioScreen"
-          component={AutoPortfolioScreen}
-          options={{ headerShown: false }}
-        />  */}
-        {/* 참여한 대외활동 리스트(교내활동) */}
+        {/* 로그인 */}
         <Stack.Screen
-          name="AttendActList"
-          component={AttendActListScreen}
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        /> 
+        {/* 홈화면 (메인화면) */}
+        <Stack.Screen
+          name="Main"
+          component={MainScreen}
           options={{ headerShown: false }}
         /> 
         {/* 대외활동 리스트 */}
@@ -56,18 +54,18 @@ export default function App() {
           component={ActivityScreen}
           options={{ headerShown: false }}
         /> 
+        {/* 참여한 대외활동 리스트(교내활동) */}
+        <Stack.Screen
+          name="AttendActList"
+          component={AttendActListScreen}
+          options={{ headerShown: false }}
+        /> 
         {/* 참여한 공지사항 리스트(교내활동) */}
         <Stack.Screen
           name="AttendSchoolActList"
           component={AttendSchoolActListScreen}
           options={{ headerShown: false }}
         /> 
-        {/* 로그인 */}
-        {/* <Stack.Screen
-          name="Main"
-          component={MainScreen}
-          options={{ headerShown: false }}
-        />  */}
         {/* 공지사항 리스트(교내활동) */}
         <Stack.Screen
           name="SchoolActList"
@@ -93,6 +91,18 @@ export default function App() {
         <Stack.Screen
           name="CreatePortfolio"
           component={CreatePortfolioScreen}
+          options={{ headerShown: false }}
+        /> 
+        {/* 나의 포트폴리오 */}
+        <Stack.Screen
+          name="Myportfolio"
+          component={MyportfolioScreen}
+          options={{ headerShown: false }}
+        /> 
+        {/* 좋아요한 활동 목록 */}
+        <Stack.Screen
+          name="viewNoticeLike"
+          component={iewNoticeLikeScreen}
           options={{ headerShown: false }}
         /> 
         </Stack.Navigator>

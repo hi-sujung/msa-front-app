@@ -115,6 +115,9 @@ export default function ActListScreen({route}) {
         </TouchableOpacity>
         </View>
   {/* <ScrollView contentContainerStyle={styles.activityList}> */}
+  <TouchableOpacity style={styles.navButtonPlus} onPress={() => navigation.navigate('AttendActList')}>
+              <Text style={styles.navButtonTextPlus}>참여한 대외활동</Text>
+            </TouchableOpacity>
     <FlatList
       data={activity}
       keyExtractor={(item) => item.id.toString()} // Assuming 'id' is a unique identifier
@@ -243,5 +246,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(74, 85, 162, 1)',
     borderRadius: 5,
     marginLeft: 10,
+  },
+  // '참여한 대외활동' 버튼
+  navButtonPlus: {
+    backgroundColor: 'transparent',
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    marginRight: 10,
+    marginBottom:13,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  navButtonTextPlus: {
+    color: 'blue',
+    fontWeight: 'bold',
   },
 });
