@@ -34,6 +34,7 @@ export default function ActivityScreen({ route }) {
     const fetchActivityDetail = async () => {
       try {
         const response = await axios.get(`${API_URL}?id=${activityId}&memberId=20211021@sungshin.ac.kr`);
+        // const response = await axios.get(`${API_URL}?id=${activityId}&memberId=${user.email}`);
         if (response.status === 200) {
           const data = response.data;
           setActivityData(data);

@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import PortfolioListScreen from './PortfolioListScreen'; // myportfolio.js 파일의 컴포넌트를 import
-import NoticeLikeScreen from './viewNoticeLike'
+import LikedNoticeScreen from './LikedNoticeScreen'
 import chatBotScreen from './ChatScreen'; 
 import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from './../utils/AuthContext';
@@ -21,7 +21,7 @@ export default function MainScreen({ navigation }) {
       style={styles.linearGradient}
     >
       <View style={styles.titleContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate('viewNoticeLike')}>
+      <TouchableOpacity onPress={() => navigation.navigate('LikedNotice')}>
       <AntDesign name="hearto" size={24} color="white" style={{ marginleft: 20 }} />
     </TouchableOpacity>
         <Text style={styles.title}>Hi, {user.name} 수정이🔮</Text>

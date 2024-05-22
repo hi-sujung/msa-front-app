@@ -16,7 +16,7 @@ import SchoolActListScreen from './screens/SchoolActListScreen';
 import SchoolActivityScreen from './screens/SchoolActivityScreen';
 import MainScreen from './screens/MainScreen';
 import PortfolioListScreen from './screens/PortfolioListScreen';
-import viewNoticeLike from './screens/viewNoticeLike';
+import LikedNoticeScreen from './screens/LikedNoticeScreen';
 import ChatScreen from './screens/ChatScreen';
 import CreatePortfolioScreen from './screens/CreatePortfolioScreen';
 import AttendSchoolActListScreen from './screens/AttendSchoolActListScreen';
@@ -31,17 +31,17 @@ export default function App() {
       <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         {/* 로그인 */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Login"
           component={LoginScreen}
           options={{ headerShown: false }}
-        /> 
+        />  */}
         {/* 홈화면 (메인화면) */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Main"
           component={MainScreen}
           options={{ headerShown: false }}
-        /> 
+        />  */}
         {/* 대외활동 리스트 */}
         <Stack.Screen
           name="ActList"
@@ -82,11 +82,11 @@ export default function App() {
         
         
         {/* 포트폴리오 리스트 */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="PortfolioList"
           component={PortfolioListScreen}
           options={{ headerShown: false }}
-        /> 
+        />  */}
         {/* 포트폴리오 생성 */}
         <Stack.Screen
           name="CreatePortfolio"
@@ -101,8 +101,8 @@ export default function App() {
         /> 
         {/* 좋아요한 활동 목록 */}
         <Stack.Screen
-          name="viewNoticeLike"
-          component={iewNoticeLikeScreen}
+          name="LikedNotice"
+          component={LikedNoticeScreen}
           options={{ headerShown: false }}
         /> 
         </Stack.Navigator>
