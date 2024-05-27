@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://10.0.2.2:8080/portfolio/new';
+const API_URL = 'http://10.0.2.2:8082/portfolio/new';
 
 
 export default function CreatePortfolioScreen() {
@@ -16,23 +16,14 @@ export default function CreatePortfolioScreen() {
   const [editedTitle, setEditedTitle] = useState('');
   const [editedSubTitle, setEditedSubTitle] = useState('');
   const [editedContent, setEditedContent] = useState('');
-  // const { token } = useAuth(); // 현재 로그인한 유저의 user, token
+  const { user, token } = useAuth(); // 현재 로그인한 유저의 user, token
   const navigation = useNavigation(); // Initialize navigation
 
-  // useEffect(() => {
-  //   CreatePortfolioData();
-  // }, []);
-
   const CreatePortfolioData = async (updatedData) => {
-    // const headers = {
-    //   Authorization: `Bearer ${token}`,
-    // };
-  
     try {
       const response = await axios.post(
-        API_URL,
-        updatedData,
-        // { headers }
+        `${API_URL}?memberId=${user.email}`,
+        updatedData
       );
   
       if (response.status === 200) {
@@ -49,7 +40,6 @@ export default function CreatePortfolioScreen() {
 
   const handleCreateButton = async () => {
     if (!editedTitle) {
-      // 제목이 비어있을 경우, 팝업 메시지
       Alert.alert('포트폴리오 제목을 입력하세요');
       return;
     }
@@ -80,30 +70,6 @@ export default function CreatePortfolioScreen() {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>포트폴리오 생성</Text>
       </View>
-      {/* <View style={styles.nav}>
-        <LinearGradient
-          colors={['#E2D0F8', '#A0BFE0']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.linearGradient}
-        >
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.navContent}>
-            {navigationButtons.map((button, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.navButton,
-                  selectedButton === button && styles.selectedNavButton,
-                ]}
-                onPress={() => handleButtonPress(button)}
-              >
-                <Text style={styles.navButtonText}>{button.title}</Text>
-                <Text style={styles.portfolioNavTitle}>{button.subTitle}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </LinearGradient>
-      </View> */}
 
       <View style={styles.main}>
         {/* <View style={styles.portfolioInfo}>
@@ -140,7 +106,7 @@ export default function CreatePortfolioScreen() {
             colors={['#E2D0F8', '#A0BFE0']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={[styles.saveButton]} // Combine styles
+            style={[styles.saveButton]} 
             >
             <TouchableOpacity onPress={handleCreateButton}>
               <Text style={styles.saveButtonText}>생성</Text>

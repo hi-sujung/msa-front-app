@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://10.0.2.2:8080/notice/univactivity/checked-list';
+const API_URL = 'http://10.0.2.2:8083/notice/univactivity/checked-list';
 
 export default function PortfolioListScreen() {
   const [portfolioList, setPortfolioList] = useState([]);
@@ -19,8 +19,7 @@ export default function PortfolioListScreen() {
 
   const fetchPortfolioData = async () => {
     try {
-      // const response = await axios.get(`${API_URL}?memberId=${user.email}`);
-      const response = await axios.get(`${API_URL}?memberId=20211021@sungshin.ac.kr`);
+      const response = await axios.get(`${API_URL}?memberId=${user.email}`);
       if (response.status === 200) {
         setPortfolioList(response.data); // Set the fetched activity data in the state
       }
@@ -28,36 +27,10 @@ export default function PortfolioListScreen() {
       console.error('해당 참여 공지사항 불러오기 오류:', error);
     }
   };
-
-  const createPortfolio = async () => {
-    // const headers = {
-    //   Authorization: `Bearer ${token}`
-    // };
-    try {
-      // const response = await axios.get(API_URL, { headers });
-      const response = await axios.get(API_URL);
-      if (response.status === 200) {
-        setPortfolioList(response.data.data); // Set the fetched activity data in the state
-      }
-    } catch (error) {
-      console.error('Error Creating activity data:', error);
-    }
-  };
   
 
   const handleHomePress = () => {
     navigation.navigate('Main'); 
-  };
-
-  // 테스트용
-  const addNavigationButton = () => {
-    const newButton = {
-      title: `포트폴리오${navigationButtons.length + 1}`,
-      subTitle: `새로운 포트폴리오 ${navigationButtons.length + 1}`,
-      content: `새로운 내용 ${navigationButtons.length + 1}`,
-    };
-
-    setNavigationButtons([...navigationButtons, newButton]);
   };
 
     return (

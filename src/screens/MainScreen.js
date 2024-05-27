@@ -29,7 +29,7 @@ export default function MainScreen({ navigation }) {
       <View style={styles.container}>
         <View style={styles.outerBox}>
           <View style={styles.row}>
-            <TouchableOpacity onPress={() => navigation.navigate('AutoPortfolioList')} style={[styles.button, styles.firstButton, { backgroundColor: '#CCA1FF', borderColor: 'transparent' }]}>
+            <TouchableOpacity onPress={() => navigation.navigate('PortfolioList')} style={[styles.button, styles.firstButton, { backgroundColor: '#CCA1FF', borderColor: 'transparent' }]}>
               <Text style={styles.buttonText}>포트폴리오 {'\n'} 관리</Text>
             </TouchableOpacity>
             <View style={styles.buttonGroup}>
@@ -41,15 +41,6 @@ export default function MainScreen({ navigation }) {
               </TouchableOpacity>
             </View>
           </View>
-          {/* <View style={styles.content2}>
-            <Text style={styles.content2title} >오늘의 추천 활동</Text>
-            <View style={styles.innerContent}>
-              <TouchableOpacity style={styles.todayRecommand}>
-                <Text style={styles.innerSmalltxt}>대외활동</Text>
-                <Text style={styles.innerTitle}>포트폴리오 관리</Text>
-              </TouchableOpacity>
-            </View>
-          </View> */}
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('chatBotScreen')} style={styles.chatBotButton}>
           <Text style={styles.chatBotButtonText}>chatBot</Text>

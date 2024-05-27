@@ -29,19 +29,31 @@ export default function App() {
     // for app test
     <AuthProvider> 
       <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Email">
+        {/* 이메일인증 */}
+        <Stack.Screen
+          name="Email"
+          component={EmailScreen}
+          options={{ headerShown: false }}
+        /> 
+        {/* 회원가입 */}
+        <Stack.Screen
+          name="Register"
+          component={RegisterScreen}
+          options={{ headerShown: false }}
+        /> 
         {/* 로그인 */}
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Login"
           component={LoginScreen}
           options={{ headerShown: false }}
-        />  */}
+        /> 
         {/* 홈화면 (메인화면) */}
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Main"
           component={MainScreen}
           options={{ headerShown: false }}
-        />  */}
+        /> 
         {/* 대외활동 리스트 */}
         <Stack.Screen
           name="ActList"
@@ -82,11 +94,11 @@ export default function App() {
         
         
         {/* 포트폴리오 리스트 */}
-        {/* <Stack.Screen
+        <Stack.Screen
           name="PortfolioList"
           component={PortfolioListScreen}
           options={{ headerShown: false }}
-        />  */}
+        /> 
         {/* 포트폴리오 생성 */}
         <Stack.Screen
           name="CreatePortfolio"

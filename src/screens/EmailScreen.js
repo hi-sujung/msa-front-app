@@ -14,36 +14,51 @@ export default function EmailScreen() {
   const [showErrorText, setShowErrorText] = useState(false);
   const navigation = useNavigation();
 
+  const API_URL = 'http://10.0.2.2:8080/mailSend';
+
   const handleEmailSubmit = async () => {
     if (!email) {
       setShowErrorText(true);
       return;
     }
-
+  
     try {
       const fullEmail = email + "@sungshin.ac.kr";
-
-      const response = await axios.post('http://3.39.104.119/member/join/mailConfirm', null, {
-        params: {
-          email: fullEmail,
+  
+      const response = await axios.post('http://10.0.2.2:8080/mailSend', 
+        {
+          email: fullEmail
         },
-      });
-
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+  
       setShowSuccessMessage(true);
       setShowErrorText(false);
-
+  
       console.log('이메일 전송 응답:', response.data);
     } catch (error) {
       console.error('이메일 전송 오류:', error);
       Alert.alert('오류', '이메일 전송에 실패했습니다. 다시 시도해주세요.');
     }
   };
+  
 
   const handleVerificationSubmit = async () => {
     try {
-      const response = await axios.get(`http://3.39.104.119:8080/member/join/verify/${verificationCode}`);
+      const fullEmail = email + "@sungshin.ac.kr";
+
+      const response = await axios.post(`http://10.0.2.2:8080/mailauthCheck`,
+      {
+        email: fullEmail,
+        authNum: verificationCode
+      }
+      );
       console.log(response.data);
-      if (response.data === "인증에 성공하였습니다.") {
+      if (response.data === "ok") {
         
         setShowSuccessMessage(true);
         setShowErrorText(false);

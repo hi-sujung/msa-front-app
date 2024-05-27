@@ -19,8 +19,7 @@ export default function PortfolioListScreen() {
 
   const fetchPortfolioData = async () => {
     try {
-      // const response = await axios.get(`${API_URL}?memberId=${user.email}`);
-      const response = await axios.get(`${API_URL}?memberId=20211021@sungshin.ac.kr`);
+      const response = await axios.get(`${API_URL}?memberId=${user.email}`);
       if (response.status === 200) {
         setPortfolioList(response.data.data); // Set the fetched activity data in the state
       }
@@ -29,35 +28,8 @@ export default function PortfolioListScreen() {
     }
   };
 
-  const createPortfolio = async () => {
-    // const headers = {
-    //   Authorization: `Bearer ${token}`
-    // };
-    try {
-      // const response = await axios.get(API_URL, { headers });
-      const response = await axios.get(API_URL);
-      if (response.status === 200) {
-        setPortfolioList(response.data.data); // Set the fetched activity data in the state
-      }
-    } catch (error) {
-      console.error('Error Creating activity data:', error);
-    }
-  };
-  
-
   const handleHomePress = () => {
     navigation.navigate('Main'); 
-  };
-
-  // 테스트용
-  const addNavigationButton = () => {
-    const newButton = {
-      title: `포트폴리오${navigationButtons.length + 1}`,
-      subTitle: `새로운 포트폴리오 ${navigationButtons.length + 1}`,
-      content: `새로운 내용 ${navigationButtons.length + 1}`,
-    };
-
-    setNavigationButtons([...navigationButtons, newButton]);
   };
 
     return (
@@ -86,11 +58,11 @@ export default function PortfolioListScreen() {
             </TouchableOpacity>
               <FlatList
                 data={portfolioList}
-                keyExtractor={(item) => item.id.toString()} // Assuming 'id' is a unique identifier
+                keyExtractor={(item) => item.id.toString()} 
                 renderItem={({ item }) => (
                   <TouchableOpacity
                     style={styles.activityItem}
-                    onPress={() => navigation.navigate('myportfolio', { portfolioId: item.id })} // Pass the activityId to the 'Activity' screen
+                    onPress={() => navigation.navigate('Myportfolio', { portfolioId: item.id })} 
                   >
                     <View style={styles.activityDetails}>
                       <Text style={styles.activityCategory}>포트폴리오</Text>

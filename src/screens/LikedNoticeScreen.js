@@ -6,8 +6,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const UNI_API_URL = 'http://3.39.104.119/univactivity/likelist';
-const EXT_API_URL = 'http://3.39.104.119/externalact/likelist';
+const UNI_API_URL = 'http://10.0.2.2:8083/notice/univactivity/like-list';
+const EXT_API_URL = 'http://10.0.2.2:8083/notice/externalact/like-list';
 
 export default function NoticeScreen() {
   const [uniLikeList, setUniLikeList] = useState([]);
@@ -22,13 +22,10 @@ export default function NoticeScreen() {
   }, []);
 
   const fetchUniLikeData = async () => {
-    const headers = {
-      Authorization: `Bearer ${token}`
-    };
     try {
-      const response = await axios.get(UNI_API_URL, { headers });
+      const response = await axios.get(`${UNI_API_URL}?memberId=${user.email}`);
       if (response.status === 200) {
-        setUniLikeList(response.data); // Set the fetched activity data in the state
+        setUniLikeList(response.data); 
       }
     } catch (error) {
       console.error('Error fetching uniLike list data:', error);
@@ -36,13 +33,10 @@ export default function NoticeScreen() {
   };
 
   const fetchExtLikeData = async () => {
-    const headers = {
-      Authorization: `Bearer ${token}`
-    };
     try {
-      const response = await axios.get(EXT_API_URL, { headers });
+      const response = await axios.get(`${EXT_API_URL}?memberId=${user.email}`);
       if (response.status === 200) {
-        setExtLikeList(response.data); // Set the fetched activity data in the state
+        setExtLikeList(response.data); 
       }
     } catch (error) {
       console.error('Error fetching external like list data:', error);

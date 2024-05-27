@@ -6,15 +6,15 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from './../utils/AuthContext';
 
-const API_URL = 'http://10.0.2.2:8080/notice/externalact/id';
-const R_API_URL = 'http://10.0.2.2:8080/recommend/external?activity_name=';
+const API_URL = 'http://10.0.2.2:8083/notice/externalact/id';
+const R_API_URL = 'http://10.0.2.2:8083/recommend/external?activity_name=';
 
-const LIKE_URL = 'http://10.0.2.2:8080/notice/externalact/like'
-const LIKECANCEL_URL = 'http://10.0.2.2:8080/notice/externalact/likecancel?id='
+const LIKE_URL = 'http://10.0.2.2:8083/notice/externalact/like'
+const LIKECANCEL_URL = 'http://10.0.2.2:8083/notice/externalact/likecancel'
 
-const ATTEND_URL = "http://10.0.2.2:8080/notice/externalact/check";
+const ATTEND_URL = "http://10.0.2.2:8083/notice/externalact/check";
 const ATTENDCANCEL_URL =
-  "http://10.0.2.2:8080/notice/externalact/check-cancel?id=";
+  "http://10.0.2.2:8083/notice/externalact/check-cancel?id=";
 
 export default function ActivityScreen({ route }) {
     const [initialLikedState, setInitialLikedState] = useState(false);
@@ -23,7 +23,7 @@ export default function ActivityScreen({ route }) {
     const { activityId } = route.params;
     const [activityData, setActivityData] = useState({});
     const [recActivityData, setRecActivityData] = useState([]);
-    const { token } = useAuth();
+    const { user, token } = useAuth();
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -33,8 +33,7 @@ export default function ActivityScreen({ route }) {
     
     const fetchActivityDetail = async () => {
       try {
-        const response = await axios.get(`${API_URL}?id=${activityId}&memberId=20211021@sungshin.ac.kr`);
-        // const response = await axios.get(`${API_URL}?id=${activityId}&memberId=${user.email}`);
+        const response = await axios.get(`${API_URL}?id=${activityId}&memberId=${user.email}`);
         if (response.status === 200) {
           const data = response.data;
           setActivityData(data);
@@ -47,16 +46,16 @@ export default function ActivityScreen({ route }) {
     };
     
 
-    
+    // 좋아요 버튼
     const toggleHeart = async () => {
       try {
         if (heartFilled) {
-          const response = await axios.delete(`${LIKECANCEL_URL}${activityId}`);
+          const response = await axios.delete(`${LIKECANCEL_URL}?memberId=${user.email}&id=${activityId}`);
           if (response.status === 200) {
             setHeartFilled(false);
           }
         } else {
-          const response = await axios.post(`${LIKE_URL}?actId=${activityId}`);
+          const response = await axios.post(`${LIKE_URL}?memberId=${user.email}&actId=${activityId}`);
           if (response.status === 200) {
             setHeartFilled(true);
           }
@@ -66,18 +65,19 @@ export default function ActivityScreen({ route }) {
       }
     };
     
+    // 참여 버튼
     const toggleAttend = async () => {
       try {
         if (attendFilled) {
           const response = await axios.delete(
-            `${ATTENDCANCEL_URL}${activityId}&memberId=20211021@sungshin.ac.kr`
+            `${ATTENDCANCEL_URL}${activityId}&memberId=${user.email}`
           );
           if (response.status === 200) {
             setAttendFilled(false);
           }
         } else {
           const response = await axios.post(
-            `${ATTEND_URL}?actId=${activityId}&memberId=20211021@sungshin.ac.kr`
+            `${ATTEND_URL}?actId=${activityId}&memberId=${user.email}`
           );
           if (response.status === 200) {
             setAttendFilled(true);

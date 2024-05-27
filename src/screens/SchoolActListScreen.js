@@ -6,10 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 
-const API_URL = 'http://10.0.2.2:8080/notice/univactivity/';
-const SEARCH_API_URL = 'http://3.39.104.119/univactivity/keyword?keyword=';
-const SEARCHD_API_URL = 'http://3.39.104.119/univactivity/department?department=';
-const SEARCHALL_API_URL = 'http://3.39.104.119/univactivity/department/keyword';
+const API_URL = 'http://10.0.2.2:8083/notice/univactivity/';
+const SEARCH_API_URL = 'http://10.0.2.2:8083/univactivity/keyword?keyword=';
+const SEARCHD_API_URL = 'http://10.0.2.2:8083/univactivity/department?department=';
+const SEARCHALL_API_URL = 'http://10.0.2.2:8083/univactivity/department/keyword';
 
 export default function SchoolActListScreen({route}) {
     const [activity, setActivity] = useState([]);
@@ -32,7 +32,7 @@ export default function SchoolActListScreen({route}) {
             try {
               const response = await axios.get(`${SEARCHALL_API_URL}?department=${d}&&keyword=${k}`);
               if (response.status === 200) {
-                setActivity(response.data); // Set the fetched activity data in the state
+                setActivity(response.data);
               }
             } catch (error) {
               console.error('Error fetching searching activity data:', error);
@@ -45,7 +45,7 @@ export default function SchoolActListScreen({route}) {
             try {
               const response = await axios.get(`${SEARCH_API_URL}${k}`);
               if (response.status === 200) {
-                setActivity(response.data); // Set the fetched activity data in the state
+                setActivity(response.data);
               }
             } catch (error) {
               console.error('Error fetching searching activity data:', error);
@@ -58,7 +58,7 @@ export default function SchoolActListScreen({route}) {
             try {
               const response = await axios.get(`${SEARCHD_API_URL}${d}`);
               if (response.status === 200) {
-                setActivity(response.data); // Set the fetched activity data in the state
+                setActivity(response.data);
               }
             } catch (error) {
               console.error('Error fetching searching activity data:', error);
@@ -68,7 +68,7 @@ export default function SchoolActListScreen({route}) {
         try {
           const response = await axios.get(API_URL);
           if (response.status === 200) {
-            setActivity(response.data); // Set the fetched activity data in the state
+            setActivity(response.data); 
           }
         } catch (error) {
           console.error('Error fetching activity data:', error);

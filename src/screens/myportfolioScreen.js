@@ -6,13 +6,12 @@ import axios from 'axios';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://10.0.2.2:8080/portfolio/';
+const API_URL = 'http://10.0.2.2:8082/portfolio/';
 
 
 export default function MyportfolioScreen({ route }) {
   const { portfolioId } = route.params;
   const [portfolioData, setPortfolio] = useState({});
-  // const [username, setUsername] = useState('');
   const [navigationButtons, setNavigationButtons] = useState([]);
   const [selectedButton, setSelectedButton] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -23,12 +22,9 @@ export default function MyportfolioScreen({ route }) {
   const [deleteButtonVisible, setDeleteButtonVisible] = useState(true);
 
  // const [portfolio, setPortfolio] = useState([]);
-  //const { user, token } = useAuth(); // 현재 로그인한 유저의 user, token
+  const { user, token } = useAuth(); // 현재 로그인한 유저의 user, token
   const navigation = useNavigation(); // Initialize navigation
-  // if (!route.params || !route.params.portfolioId) {
-  //   // Handle the case when portfolioId is not available
-  //   console.log(파람스없음)
-  // }
+
 
   useEffect(() => {
     fetchPortfolioData();
@@ -39,7 +35,7 @@ export default function MyportfolioScreen({ route }) {
     try {
       const response = await axios.get(`${API_URL}id?id=${portfolioId}`);
       if (response.status === 200) {
-        setPortfolio(response.data.data); // Set the fetched activity data in the state
+        setPortfolio(response.data.data);
         console.log('상세페이지 불러옴');
       }
     } catch (error) {
@@ -49,15 +45,11 @@ export default function MyportfolioScreen({ route }) {
 
   // 포트폴리오 편집
 const EditPortfolioData = async (updatedData) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
 
   try {
     const response = await axios.post(
       `${API_URL}update/id?id=${portfolioId}`,
-      updatedData,
-      { headers }
+      updatedData
     );
 
     if (response.status === 200) {
@@ -73,11 +65,7 @@ const EditPortfolioData = async (updatedData) => {
   // 포트폴리오 삭제
   const deletePortfolioData = async () => {
     try {
-      const response = await axios.delete(`${API_URL}portfolio/id?id=${portfolioId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.delete(`${API_URL}portfolio/id?id=${portfolioId}`);
   
       if (response.status === 200) {
         // 포트폴리오 삭제 성공 시 처리
@@ -152,6 +140,7 @@ const EditPortfolioData = async (updatedData) => {
       await EditPortfolioData(updatedButton); // 서버에 수정된 데이터를 저장
       setNavigationButtons([...navigationButtons.map((button) => (button === selectedButton ? updatedButton : button))]); // 수정된 버튼 정보를 업데이트
       setIsEditMode(false); // 편집 모드 비활성화
+      setDeleteButtonVisible(true);
       fetchPortfolioData(); // 수정된 내용을 다시 불러옴
     } catch (error) {
       console.error('포트폴리오 수정 에러:', error);
@@ -229,7 +218,7 @@ const EditPortfolioData = async (updatedData) => {
             <Text
             style={styles.editButtonText}
             onPress={isEditMode ? handleSaveButtonClick : handleEditButtonClick}
-            >{isEditMode ? '완료' : '수정'}</Text>
+            >{isEditMode ? '취소' : '수정'}</Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.name}>{user.name} 수정 </Text>
