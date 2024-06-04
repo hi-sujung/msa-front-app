@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://10.0.2.2:8082/portfolio/';
+const API_URL = 'http://msa-portfolio:3001/portfolio/';
 
 
 export default function MyportfolioScreen({ route }) {

@@ -8,7 +8,7 @@ import { useAuth } from './../utils/AuthContext';
 
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://10.0.2.2:8080/member/login';
+const API_URL = 'http://member-service:80/member/login';
 
 
 // function LoginScreen({ navigation }) {

@@ -5,8 +5,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
-const API_URL = 'http://10.0.2.2:8083/notice/externalact/';
-const SEARCH_API_URL = 'http://10.0.2.2:8083/notice/externalact/keyword';
+const API_URL = 'http://notice-service:8080/notice/externalact/';
+const SEARCH_API_URL = 'http://notice-service:8080/notice/externalact/keyword';
 
 export default function ActListScreen({route}) {
     //const searchData = route.params;

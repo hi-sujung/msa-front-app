@@ -6,8 +6,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const UNI_API_URL = 'http://10.0.2.2:8083/notice/univactivity/like-list';
-const EXT_API_URL = 'http://10.0.2.2:8083/notice/externalact/like-list';
+const UNI_API_URL = 'http://spring-cloud-gateway-svc:80/notice/univactivity/like-list';
+const EXT_API_URL = 'http://spring-cloud-gateway-svc:80/notice/externalact/like-list';
 
 export default function NoticeScreen() {
   const [uniLikeList, setUniLikeList] = useState([]);
@@ -22,8 +22,12 @@ export default function NoticeScreen() {
   }, []);
 
   const fetchUniLikeData = async () => {
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
+
     try {
-      const response = await axios.get(`${UNI_API_URL}?memberId=${user.email}`);
+      const response = await axios.get(UNI_API_URL, {headers});
       if (response.status === 200) {
         setUniLikeList(response.data); 
       }
@@ -33,8 +37,12 @@ export default function NoticeScreen() {
   };
 
   const fetchExtLikeData = async () => {
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
+
     try {
-      const response = await axios.get(`${EXT_API_URL}?memberId=${user.email}`);
+      const response = await axios.get(EXT_API_URL, {headers});
       if (response.status === 200) {
         setExtLikeList(response.data); 
       }

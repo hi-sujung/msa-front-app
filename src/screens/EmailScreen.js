@@ -14,7 +14,7 @@ export default function EmailScreen() {
   const [showErrorText, setShowErrorText] = useState(false);
   const navigation = useNavigation();
 
-  const API_URL = 'http://10.0.2.2:8080/mailSend';
+  const API_URL = 'http://member-service:80';
 
   const handleEmailSubmit = async () => {
     if (!email) {
@@ -25,7 +25,7 @@ export default function EmailScreen() {
     try {
       const fullEmail = email + "@sungshin.ac.kr";
   
-      const response = await axios.post('http://10.0.2.2:8080/mailSend', 
+      const response = await axios.post(`${API_URL}/mailSend`, 
         {
           email: fullEmail
         },
@@ -51,7 +51,7 @@ export default function EmailScreen() {
     try {
       const fullEmail = email + "@sungshin.ac.kr";
 
-      const response = await axios.post(`http://10.0.2.2:8080/mailauthCheck`,
+      const response = await axios.post(`${API_URL}/mailauthCheck`,
       {
         email: fullEmail,
         authNum: verificationCode

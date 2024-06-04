@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://10.0.2.2:8082/portfolio/new';
+const API_URL = 'http://spring-cloud-gateway-svc/new';
 
 
 export default function CreatePortfolioScreen() {
@@ -20,10 +20,15 @@ export default function CreatePortfolioScreen() {
   const navigation = useNavigation(); // Initialize navigation
 
   const CreatePortfolioData = async (updatedData) => {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+  
     try {
       const response = await axios.post(
-        `${API_URL}?memberId=${user.email}`,
-        updatedData
+        API_URL,
+        updatedData,
+        { headers }
       );
   
       if (response.status === 200) {

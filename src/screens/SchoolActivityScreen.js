@@ -13,16 +13,16 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "./../utils/AuthContext";
 
-const API_URL = "http://10.0.2.2:8083/notice/univactivity/id";
-const R_API_URL = "http://10.0.2.2:8080/recommend/univ?activity_name=";
+const API_URL = "http://spring-cloud-gateway-svc/notice/univactivity/id";
+const R_API_URL = "http://notice-service:8080/recommend/univ?id=";
 
-const LIKE_URL = "http://10.0.2.2:8083/notice/univactivity/like";
+const LIKE_URL = "http://spring-cloud-gateway-svc/notice/univactivity/like";
 const LIKECANCEL_URL =
-  "http://10.0.2.2:8083/notice/univactivity/likecancel";
+  "http://spring-cloud-gateway-svc/notice/univactivity/likecancel";
 
-const ATTEND_URL = "http://10.0.2.2:8083/notice/univactivity/check";
+const ATTEND_URL = "http://spring-cloud-gateway-svc/notice/univactivity/check";
 const ATTENDCANCEL_URL =
-  "http://10.0.2.2:8083/notice/univactivity/check-cancel?id=";
+  "http://spring-cloud-gateway-svc/notice/univactivity/check-cancel?id=";
 
 export default function ActivityScreen({ route }) {
   const [initialLikedState, setInitialLikedState] = useState(false);
@@ -40,9 +40,12 @@ export default function ActivityScreen({ route }) {
   }, []);
 
   const fetchActivityDetail = async () => {
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
 
     try {
-      const response = await axios.get(`${API_URL}?actId=${activityId}&memberId=${user.email}`);
+      const response = await axios.get(`${API_URL}?actId=${activityId}`, {headers});
       if (response.status === 200) {
         const data = response.data;
         setActivityData(data);
@@ -57,12 +60,16 @@ export default function ActivityScreen({ route }) {
 
   // 좋아요 버튼
   const toggleHeart = async () => {
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
 
     console.log(activityId);
     if (heartFilled === false) {
       try {
         const response1 = await axios.post(
-          `${LIKE_URL}?memberId=${user.email}&actId=${activityId}`
+          `${LIKE_URL}?actId=${activityId}`,
+          {headers}
         );
         if (response1.status === 200) {
           console.log(response1.data);
@@ -73,7 +80,9 @@ export default function ActivityScreen({ route }) {
       }
     } else {
       try {
-        const response2 = await axios.delete(`${LIKECANCEL_URL}??memberId=${user.email}&id=${activityId}`);
+        const response2 = await axios.delete(`${LIKECANCEL_URL}?id=${activityId}`,
+          {headers}
+        );
         if (response2.status === 200) {
           console.log(response2.data);
           setHeartFilled(false);
@@ -88,12 +97,16 @@ export default function ActivityScreen({ route }) {
 
   // 참여 버튼
   const toggleAttend = async () => {
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
 
     console.log(activityId);
     if (attendFilled === false) {
       try {
         const response1 = await axios.post(
-          `${ATTEND_URL}?actId=${activityId}&memberId=${user.email}`
+          `${ATTEND_URL}?actId=${activityId}`,
+          {headers}
         );
         if (response1.status === 200) {
           console.log(response1.data);
@@ -105,7 +118,8 @@ export default function ActivityScreen({ route }) {
     } else {
       try {
         const response2 = await axios.delete(
-          `${ATTENDCANCEL_URL}${activityId}&memberId=${user.email}`
+          `${ATTENDCANCEL_URL}${activityId}`,
+          {headers}
         );
         if (response2.status === 200) {
           console.log(response2.data);

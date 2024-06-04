@@ -6,10 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 
-const API_URL = 'http://10.0.2.2:8083/notice/univactivity/';
-const SEARCH_API_URL = 'http://10.0.2.2:8083/univactivity/keyword?keyword=';
-const SEARCHD_API_URL = 'http://10.0.2.2:8083/univactivity/department?department=';
-const SEARCHALL_API_URL = 'http://10.0.2.2:8083/univactivity/department/keyword';
+const API_URL = 'http://notice-service:8080/notice/univactivity/';
+const SEARCH_API_URL = 'http://notice-service:8080/notice/univactivity/keyword?keyword=';
+const SEARCHD_API_URL = 'http://notice-service:8080/notice/univactivity/department?department=';
+const SEARCHALL_API_URL = 'http://notice-service:8080/notice/univactivity/department/keyword';
 
 export default function SchoolActListScreen({route}) {
     const [activity, setActivity] = useState([]);

@@ -6,8 +6,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://10.0.2.2:8083/notice/externalact/checked-list';
-const AUTO_API_URL = 'http://10.0.2.2:8083/notice/portfolio/create-by-ai';
+const API_URL = 'http://spring-cloud-gateway-svc:80/notice/externalact/checked-list';
+const AUTO_API_URL = 'http://spring-cloud-gateway-svc:80/notice/portfolio/create-by-ai';
 
 export default function NoticeScreen() {
   const [attendList, setAttendList] = useState([]);
@@ -22,8 +22,12 @@ export default function NoticeScreen() {
   }, []);
 
   const fetchAttendData = async () => {
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
+
     try {
-      const response = await axios.get(`${API_URL}?memberId=${user.email}`);
+      const response = await axios.get(`${API_URL}`, { headers });
       if (response.status === 200) {
         setAttendList(response.data);
       }
@@ -34,7 +38,7 @@ export default function NoticeScreen() {
 
   const createAutoPortfolio = async () => {
     try {
-      const response = await axios.post(`${AUTO_API_URL}?memberId=${user.email}&careerField=${careerKeyword}&title=${portfolioTitle}`);
+      const response = await axios.post(`${AUTO_API_URL}?careerField=${careerKeyword}&title=${portfolioTitle}`, { headers });
       if (response.status === 200) {
         console.log("포트폴리오 자동 생성 완료");
       }

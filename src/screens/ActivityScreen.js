@@ -6,15 +6,15 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from './../utils/AuthContext';
 
-const API_URL = 'http://10.0.2.2:8083/notice/externalact/id';
-const R_API_URL = 'http://10.0.2.2:8083/recommend/external?activity_name=';
+const API_URL = 'http://spring-cloud-gateway-svc/notice/externalact/id';
+const R_API_URL = 'http://notice-service:8080/recommend/external?id=';
 
-const LIKE_URL = 'http://10.0.2.2:8083/notice/externalact/like'
-const LIKECANCEL_URL = 'http://10.0.2.2:8083/notice/externalact/likecancel'
+const LIKE_URL = 'http://spring-cloud-gateway-svc/notice/externalact/like'
+const LIKECANCEL_URL = 'http://spring-cloud-gateway-svc/notice/externalact/likecancel'
 
-const ATTEND_URL = "http://10.0.2.2:8083/notice/externalact/check";
+const ATTEND_URL = "http://spring-cloud-gateway-svc/notice/externalact/check";
 const ATTENDCANCEL_URL =
-  "http://10.0.2.2:8083/notice/externalact/check-cancel?id=";
+  "http://spring-cloud-gateway-svc/notice/externalact/check-cancel?id=";
 
 export default function ActivityScreen({ route }) {
     const [initialLikedState, setInitialLikedState] = useState(false);
@@ -32,8 +32,12 @@ export default function ActivityScreen({ route }) {
     }, []);
     
     const fetchActivityDetail = async () => {
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+
       try {
-        const response = await axios.get(`${API_URL}?id=${activityId}&memberId=${user.email}`);
+        const response = await axios.get(`${API_URL}?id=${activityId}`, { headers });
         if (response.status === 200) {
           const data = response.data;
           setActivityData(data);
@@ -48,14 +52,18 @@ export default function ActivityScreen({ route }) {
 
     // 좋아요 버튼
     const toggleHeart = async () => {
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+
       try {
         if (heartFilled) {
-          const response = await axios.delete(`${LIKECANCEL_URL}?memberId=${user.email}&id=${activityId}`);
+          const response = await axios.delete(`${LIKECANCEL_URL}?id=${activityId}`, { headers });
           if (response.status === 200) {
             setHeartFilled(false);
           }
         } else {
-          const response = await axios.post(`${LIKE_URL}?memberId=${user.email}&actId=${activityId}`);
+          const response = await axios.post(`${LIKE_URL}?actId=${activityId}`, { headers });
           if (response.status === 200) {
             setHeartFilled(true);
           }
@@ -67,17 +75,23 @@ export default function ActivityScreen({ route }) {
     
     // 참여 버튼
     const toggleAttend = async () => {
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+
       try {
         if (attendFilled) {
           const response = await axios.delete(
-            `${ATTENDCANCEL_URL}${activityId}&memberId=${user.email}`
+            `${ATTENDCANCEL_URL}${activityId}`,
+            { headers }
           );
           if (response.status === 200) {
             setAttendFilled(false);
           }
         } else {
           const response = await axios.post(
-            `${ATTEND_URL}?actId=${activityId}&memberId=${user.email}`
+            `${ATTEND_URL}?actId=${activityId}`,
+            { headers }
           );
           if (response.status === 200) {
             setAttendFilled(true);

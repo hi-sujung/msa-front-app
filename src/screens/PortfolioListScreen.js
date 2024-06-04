@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'http://10.0.2.2:8082/portfolio/portfoliolist';
+const API_URL = 'http://spring-cloud-gateway-svc:80/portfolio/portfoliolist';
 
 export default function PortfolioListScreen() {
   const [portfolioList, setPortfolioList] = useState([]);
@@ -18,8 +18,12 @@ export default function PortfolioListScreen() {
   }, []);
 
   const fetchPortfolioData = async () => {
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
+
     try {
-      const response = await axios.get(`${API_URL}?memberId=${user.email}`);
+      const response = await axios.get(API_URL, {headers});
       if (response.status === 200) {
         setPortfolioList(response.data.data); // Set the fetched activity data in the state
       }
