@@ -5,16 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from './../utils/AuthContext';
-
-const API_URL = 'http://spring-cloud-gateway-svc/notice/externalact/id';
-const R_API_URL = 'http://notice-service:8080/recommend/external?id=';
-
-const LIKE_URL = 'http://spring-cloud-gateway-svc/notice/externalact/like'
-const LIKECANCEL_URL = 'http://spring-cloud-gateway-svc/notice/externalact/likecancel'
-
-const ATTEND_URL = "http://spring-cloud-gateway-svc/notice/externalact/check";
-const ATTENDCANCEL_URL =
-  "http://spring-cloud-gateway-svc/notice/externalact/check-cancel?id=";
+import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING_GATEWAY_URL } from '@env';
 
 export default function ActivityScreen({ route }) {
     const [initialLikedState, setInitialLikedState] = useState(false);
@@ -37,7 +28,7 @@ export default function ActivityScreen({ route }) {
       };
 
       try {
-        const response = await axios.get(`${API_URL}?id=${activityId}`, { headers });
+        const response = await axios.get(`${SPRING_GATEWAY_URL}/notice/externalact/id?id=${activityId}`, { headers });
         if (response.status === 200) {
           const data = response.data;
           setActivityData(data);
@@ -58,12 +49,12 @@ export default function ActivityScreen({ route }) {
 
       try {
         if (heartFilled) {
-          const response = await axios.delete(`${LIKECANCEL_URL}?id=${activityId}`, { headers });
+          const response = await axios.delete(`${SPRING_GATEWAY_URL}/notice/externalact/likecancel?id=${activityId}`, { headers });
           if (response.status === 200) {
             setHeartFilled(false);
           }
         } else {
-          const response = await axios.post(`${LIKE_URL}?actId=${activityId}`, { headers });
+          const response = await axios.post(`${SPRING_GATEWAY_URL}/notice/externalact/like?actId=${activityId}`, { headers });
           if (response.status === 200) {
             setHeartFilled(true);
           }
@@ -82,7 +73,7 @@ export default function ActivityScreen({ route }) {
       try {
         if (attendFilled) {
           const response = await axios.delete(
-            `${ATTENDCANCEL_URL}${activityId}`,
+            `${SPRING_GATEWAY_URL}/notice/externalact/check-cancel?id=${activityId}`,
             { headers }
           );
           if (response.status === 200) {
@@ -90,7 +81,7 @@ export default function ActivityScreen({ route }) {
           }
         } else {
           const response = await axios.post(
-            `${ATTEND_URL}?actId=${activityId}`,
+            `${SPRING_GATEWAY_URL}/notice/externalact/check?actId=${activityId}`,
             { headers }
           );
           if (response.status === 200) {
@@ -119,7 +110,7 @@ export default function ActivityScreen({ route }) {
     const fetchRecActivityDetail = async () => {
 
     try {
-      const response = await axios.get(`${R_API_URL}${activityId}`);
+      const response = await axios.get(`${RECOMMENDED_URL}/external?id=${activityId}`);
       if (response.status === 200) {
         setRecActivityData(response.data);
         console.log(response.data)

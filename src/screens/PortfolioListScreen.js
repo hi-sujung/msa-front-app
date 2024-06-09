@@ -5,8 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
-
-const API_URL = 'http://spring-cloud-gateway-svc:80/portfolio/portfoliolist';
+import { SPRING_GATEWAY_URL } from '@env';
 
 export default function PortfolioListScreen() {
   const [portfolioList, setPortfolioList] = useState([]);
@@ -23,7 +22,7 @@ export default function PortfolioListScreen() {
     };
 
     try {
-      const response = await axios.get(API_URL, {headers});
+      const response = await axios.get(`${SPRING_GATEWAY_URL}/portfolio/portfoliolist`, {headers});
       if (response.status === 200) {
         setPortfolioList(response.data.data); // Set the fetched activity data in the state
       }

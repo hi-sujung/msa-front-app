@@ -6,7 +6,7 @@ import axios from 'axios';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AuthProvider } from './utils/AuthContext'; // app에서 navigation을 AuthProvider로 감싸야 함
-import MyportfolioScreen from './screens/MyportfolioScreen';
+import MyportfolioScreen from './screens/myportfolioScreen';
 import LoginScreen from './screens/LoginScreen';
 import ActivityScreen from './screens/ActivityScreen';
 import ActListScreen from './screens/ActListScreen';

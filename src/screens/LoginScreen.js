@@ -5,11 +5,8 @@ import axios from 'axios';
 import { NavigationContainer } from '@react-navigation/native';
 import EmailScreen from './../screens/EmailScreen';
 import { useAuth } from './../utils/AuthContext';
-
 import { useNavigation } from '@react-navigation/native';
-
-const API_URL = 'http://member-service:80/member/login';
-
+import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING_GATEWAY_URL } from '@env';
 
 // function LoginScreen({ navigation }) {
   function LoginScreen() {
@@ -25,7 +22,7 @@ const API_URL = 'http://member-service:80/member/login';
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(API_URL, {
+      const response = await axios.post(`${MEMBER_URL}/member/login`, {
         email: email,
         password: password,
       });

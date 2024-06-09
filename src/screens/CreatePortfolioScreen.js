@@ -5,9 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
-
-const API_URL = 'http://spring-cloud-gateway-svc/new';
-
+import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING_GATEWAY_URL } from '@env';
 
 export default function CreatePortfolioScreen() {
   const [portfolioData, setPortfolio] = useState({});
@@ -26,7 +24,7 @@ export default function CreatePortfolioScreen() {
   
     try {
       const response = await axios.post(
-        API_URL,
+        `${SPRING_GATEWAY_URL}/new`,
         updatedData,
         { headers }
       );

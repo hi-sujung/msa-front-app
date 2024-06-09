@@ -5,11 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
-
-const API_URL = 'http://notice-service:8080/notice/univactivity/';
-const SEARCH_API_URL = 'http://notice-service:8080/notice/univactivity/keyword?keyword=';
-const SEARCHD_API_URL = 'http://notice-service:8080/notice/univactivity/department?department=';
-const SEARCHALL_API_URL = 'http://notice-service:8080/notice/univactivity/department/keyword';
+import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING_GATEWAY_URL } from '@env';
 
 export default function SchoolActListScreen({route}) {
     const [activity, setActivity] = useState([]);
@@ -30,7 +26,7 @@ export default function SchoolActListScreen({route}) {
             console.log(k)
             //검색한 결과
             try {
-              const response = await axios.get(`${SEARCHALL_API_URL}?department=${d}&&keyword=${k}`);
+              const response = await axios.get(`${UNIV_NOTICE_URL}/department/keyword?department=${d}&&keyword=${k}`);
               if (response.status === 200) {
                 setActivity(response.data);
               }
@@ -43,7 +39,7 @@ export default function SchoolActListScreen({route}) {
             console.log(k)
             //검색한 결과
             try {
-              const response = await axios.get(`${SEARCH_API_URL}${k}`);
+              const response = await axios.get(`${UNIV_NOTICE_URL}/keyword?keyword=${k}`);
               if (response.status === 200) {
                 setActivity(response.data);
               }
@@ -56,7 +52,7 @@ export default function SchoolActListScreen({route}) {
             console.log(k)
             //검색한 결과
             try {
-              const response = await axios.get(`${SEARCHD_API_URL}${d}`);
+              const response = await axios.get(`${UNIV_NOTICE_URL}/department?department=${d}`);
               if (response.status === 200) {
                 setActivity(response.data);
               }
@@ -66,7 +62,7 @@ export default function SchoolActListScreen({route}) {
           }
         else {
         try {
-          const response = await axios.get(API_URL);
+          const response = await axios.get(`${UNIV_NOTICE_URL}/`);
           if (response.status === 200) {
             setActivity(response.data); 
           }

@@ -12,17 +12,7 @@ import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "./../utils/AuthContext";
-
-const API_URL = "http://spring-cloud-gateway-svc/notice/univactivity/id";
-const R_API_URL = "http://notice-service:8080/recommend/univ?id=";
-
-const LIKE_URL = "http://spring-cloud-gateway-svc/notice/univactivity/like";
-const LIKECANCEL_URL =
-  "http://spring-cloud-gateway-svc/notice/univactivity/likecancel";
-
-const ATTEND_URL = "http://spring-cloud-gateway-svc/notice/univactivity/check";
-const ATTENDCANCEL_URL =
-  "http://spring-cloud-gateway-svc/notice/univactivity/check-cancel?id=";
+import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING_GATEWAY_URL } from '@env';
 
 export default function ActivityScreen({ route }) {
   const [initialLikedState, setInitialLikedState] = useState(false);
@@ -45,7 +35,7 @@ export default function ActivityScreen({ route }) {
     };
 
     try {
-      const response = await axios.get(`${API_URL}?actId=${activityId}`, {headers});
+      const response = await axios.get(`${SPRING_GATEWAY_URL}/notice/univactivity/id?actId=${activityId}`, {headers});
       if (response.status === 200) {
         const data = response.data;
         setActivityData(data);
@@ -68,7 +58,7 @@ export default function ActivityScreen({ route }) {
     if (heartFilled === false) {
       try {
         const response1 = await axios.post(
-          `${LIKE_URL}?actId=${activityId}`,
+          `${SPRING_GATEWAY_URL}/notice/univactivity/like?actId=${activityId}`,
           {headers}
         );
         if (response1.status === 200) {
@@ -80,7 +70,7 @@ export default function ActivityScreen({ route }) {
       }
     } else {
       try {
-        const response2 = await axios.delete(`${LIKECANCEL_URL}?id=${activityId}`,
+        const response2 = await axios.delete(`${SPRING_GATEWAY_URL}/notice/univactivity/likecancel?id=${activityId}`,
           {headers}
         );
         if (response2.status === 200) {
@@ -105,7 +95,7 @@ export default function ActivityScreen({ route }) {
     if (attendFilled === false) {
       try {
         const response1 = await axios.post(
-          `${ATTEND_URL}?actId=${activityId}`,
+          `${SPRING_GATEWAY_URL}/notice/univactivity/check?actId=${activityId}`,
           {headers}
         );
         if (response1.status === 200) {
@@ -118,7 +108,7 @@ export default function ActivityScreen({ route }) {
     } else {
       try {
         const response2 = await axios.delete(
-          `${ATTENDCANCEL_URL}${activityId}`,
+          `${SPRING_GATEWAY_URL}/notice/univactivity/check-cancel?id=${activityId}`,
           {headers}
         );
         if (response2.status === 200) {
@@ -147,7 +137,7 @@ export default function ActivityScreen({ route }) {
   // Get List of Recommend System
   const fetchRecActivityDetail = async () => {
     try {
-      const response = await axios.get(`${R_API_URL}${activityId}`);
+      const response = await axios.get(`${RECOMMENDED_URL}/univ?id=${activityId}`);
       if (response.status === 200) {
         setRecActivityData(response.data);
         console.log(response.data);

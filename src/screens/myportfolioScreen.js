@@ -5,8 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
-
-const API_URL = 'http://msa-portfolio:3001/portfolio/';
+import { PORTFOLIO_URL } from '@env';
 
 
 export default function MyportfolioScreen({ route }) {
@@ -33,7 +32,7 @@ export default function MyportfolioScreen({ route }) {
   const fetchPortfolioData = async () => {
 
     try {
-      const response = await axios.get(`${API_URL}id?id=${portfolioId}`);
+      const response = await axios.get(`${PORTFOLIO_URL}/id?id=${portfolioId}`);
       if (response.status === 200) {
         setPortfolio(response.data.data);
         console.log('상세페이지 불러옴');
@@ -48,7 +47,7 @@ const EditPortfolioData = async (updatedData) => {
 
   try {
     const response = await axios.post(
-      `${API_URL}update/id?id=${portfolioId}`,
+      `${PORTFOLIO_URL}/update/id?id=${portfolioId}`,
       updatedData
     );
 
@@ -65,7 +64,7 @@ const EditPortfolioData = async (updatedData) => {
   // 포트폴리오 삭제
   const deletePortfolioData = async () => {
     try {
-      const response = await axios.delete(`${API_URL}portfolio/id?id=${portfolioId}`);
+      const response = await axios.delete(`${PORTFOLIO_URL}/portfolio/id?id=${portfolioId}`);
   
       if (response.status === 200) {
         // 포트폴리오 삭제 성공 시 처리

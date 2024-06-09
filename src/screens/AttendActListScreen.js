@@ -5,9 +5,7 @@ import axios from 'axios';
 import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
-
-const API_URL = 'http://spring-cloud-gateway-svc:80/notice/externalact/checked-list';
-const AUTO_API_URL = 'http://spring-cloud-gateway-svc:80/notice/portfolio/create-by-ai';
+import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING_GATEWAY_URL } from '@env';
 
 export default function NoticeScreen() {
   const [attendList, setAttendList] = useState([]);
@@ -27,7 +25,7 @@ export default function NoticeScreen() {
     };
 
     try {
-      const response = await axios.get(`${API_URL}`, { headers });
+      const response = await axios.get(`${SPRING_GATEWAY_URL}/notice/externalact/checked-list`, { headers });
       if (response.status === 200) {
         setAttendList(response.data);
       }
@@ -38,7 +36,7 @@ export default function NoticeScreen() {
 
   const createAutoPortfolio = async () => {
     try {
-      const response = await axios.post(`${AUTO_API_URL}?careerField=${careerKeyword}&title=${portfolioTitle}`, { headers });
+      const response = await axios.post(`${SPRING_GATEWAY_URL}/notice/portfolio/create-by-ai?careerField=${careerKeyword}&title=${portfolioTitle}`, { headers });
       if (response.status === 200) {
         console.log("포트폴리오 자동 생성 완료");
       }

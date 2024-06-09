@@ -4,8 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { MEMBER_URL } from '@env';
 
-const API_URL = 'http://member-service:80/member/join';
 
 const openLink = () => {
   Linking.openURL('#');
@@ -27,7 +27,7 @@ export default function RegisterScreen({ navigation }) {
   const handleRegister = async () => {
     handleChkPwd();
     try {
-      const response = await axios.post(API_URL, {
+      const response = await axios.post(`${MEMBER_URL}/member/join`, {
         email: email,
         userName: username,
         password: password,

@@ -5,7 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import { useAuth } from './../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
-
+import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING_GATEWAY_URL } from '@env';
 
 export default function EmailScreen() {
   const [email, setEmail] = useState("");
@@ -13,8 +13,6 @@ export default function EmailScreen() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorText, setShowErrorText] = useState(false);
   const navigation = useNavigation();
-
-  const API_URL = 'http://member-service:80';
 
   const handleEmailSubmit = async () => {
     if (!email) {
@@ -25,7 +23,7 @@ export default function EmailScreen() {
     try {
       const fullEmail = email + "@sungshin.ac.kr";
   
-      const response = await axios.post(`${API_URL}/mailSend`, 
+      const response = await axios.post(`${MEMBER_URL}/mailSend`, 
         {
           email: fullEmail
         },
@@ -51,7 +49,7 @@ export default function EmailScreen() {
     try {
       const fullEmail = email + "@sungshin.ac.kr";
 
-      const response = await axios.post(`${API_URL}/mailauthCheck`,
+      const response = await axios.post(`${MEMBER_URL}/mailauthCheck`,
       {
         email: fullEmail,
         authNum: verificationCode

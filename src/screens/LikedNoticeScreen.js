@@ -5,9 +5,7 @@ import axios from 'axios';
 import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
-
-const UNI_API_URL = 'http://spring-cloud-gateway-svc:80/notice/univactivity/like-list';
-const EXT_API_URL = 'http://spring-cloud-gateway-svc:80/notice/externalact/like-list';
+import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING_GATEWAY_URL } from '@env';
 
 export default function NoticeScreen() {
   const [uniLikeList, setUniLikeList] = useState([]);
@@ -27,7 +25,7 @@ export default function NoticeScreen() {
     };
 
     try {
-      const response = await axios.get(UNI_API_URL, {headers});
+      const response = await axios.get(`${SPRING_GATEWAY_URL}/notice/univactivity/like-list`, {headers});
       if (response.status === 200) {
         setUniLikeList(response.data); 
       }
@@ -42,7 +40,7 @@ export default function NoticeScreen() {
     };
 
     try {
-      const response = await axios.get(EXT_API_URL, {headers});
+      const response = await axios.get(`${SPRING_GATEWAY_URL}/notice/externalact/like-list`, {headers});
       if (response.status === 200) {
         setExtLikeList(response.data); 
       }

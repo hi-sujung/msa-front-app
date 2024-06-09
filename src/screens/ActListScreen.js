@@ -4,9 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-
-const API_URL = 'http://notice-service:8080/notice/externalact/';
-const SEARCH_API_URL = 'http://notice-service:8080/notice/externalact/keyword';
+import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING_GATEWAY_URL } from '@env';
 
 export default function ActListScreen({route}) {
     //const searchData = route.params;
@@ -24,7 +22,7 @@ export default function ActListScreen({route}) {
           console.log(k)
           //검색한 결과
           try {
-            const response = await axios.get(`${SEARCH_API_URL}?keyword=${k}`);
+            const response = await axios.get(`${EXTERN_NOTICE_URL}/keyword?keyword=${k}`);
             if (response.status === 200) {
               setActivity(response.data); 
             }
@@ -34,7 +32,7 @@ export default function ActListScreen({route}) {
         }
         else{
         try {
-          const response = await axios.get(API_URL);
+          const response = await axios.get(`${EXTERN_NOTICE_URL}/`);
           if (response.status === 200) {
             setActivity(response.data); 
             console.log("대외활동 리스트 불러오기")
