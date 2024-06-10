@@ -3,9 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Dimens
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
-import { useAuth } from './../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
-import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING_GATEWAY_URL } from '@env';
+import { MEMBER_URL } from '@env';
 
 export default function EmailScreen() {
   const [email, setEmail] = useState("");
@@ -13,13 +12,13 @@ export default function EmailScreen() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorText, setShowErrorText] = useState(false);
   const navigation = useNavigation();
+  const [mailCode, setMailCode] = useState(null);
 
   const handleEmailSubmit = async () => {
     if (!email) {
       setShowErrorText(true);
       return;
     }
-  
     try {
       const fullEmail = email + "@sungshin.ac.kr";
   
@@ -38,35 +37,20 @@ export default function EmailScreen() {
       setShowErrorText(false);
   
       console.log('이메일 전송 응답:', response.data);
+      setMailCode(response.data);
     } catch (error) {
       console.error('이메일 전송 오류:', error);
       Alert.alert('오류', '이메일 전송에 실패했습니다. 다시 시도해주세요.');
     }
   };
-  
 
-  const handleVerificationSubmit = async () => {
-    try {
-      const fullEmail = email + "@sungshin.ac.kr";
-
-      const response = await axios.post(`${MEMBER_URL}/mailauthCheck`,
-      {
-        email: fullEmail,
-        authNum: verificationCode
-      }
-      );
-      console.log(response.data);
-      if (response.data === "ok") {
-        
-        setShowSuccessMessage(true);
-        setShowErrorText(false);
-        navigation.navigate('Register');
-      } else {
-        setShowSuccessMessage(false);
-        setShowErrorText(true);
-      }
-    } catch (error) {
-      console.error('인증 제출 오류:', error);
+  const handleVerificationSubmit = () => {
+    if (String(mailCode) === String(verificationCode)) {
+      setShowSuccessMessage(true);
+      setShowErrorText(false);
+      navigation.navigate('Register');
+    } else {
+      console.log("인증실패");
       setShowSuccessMessage(false);
       setShowErrorText(true);
     }
@@ -101,7 +85,7 @@ export default function EmailScreen() {
             value={email}
             onChangeText={setEmail}
           />
-          <Text style={styles.emilText}>@sungshin.ac.kr</Text>
+          <Text style={styles.emailText}>@sungshin.ac.kr</Text>
           <TouchableOpacity style={styles.submitButton} onPress={handleEmailSubmit}>
             <Text style={styles.submitButtonText}>전송</Text>
           </TouchableOpacity>

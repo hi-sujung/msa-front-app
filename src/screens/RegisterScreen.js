@@ -34,7 +34,7 @@ export default function RegisterScreen({ navigation }) {
         checkedPassword: confirmPassword,
         department1: department1,
         department2: department2,
-        role: "USER",
+        role: "USER"
       });
 
       if (response.status === 200) {

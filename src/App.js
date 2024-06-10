@@ -29,7 +29,7 @@ export default function App() {
     // for app test
     <AuthProvider> 
       <NavigationContainer>
-      <Stack.Navigator initialRouteName="Email">
+      <Stack.Navigator initialRouteName="Login">
         {/* 이메일인증 */}
         <Stack.Screen
           name="Email"

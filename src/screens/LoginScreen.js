@@ -24,7 +24,7 @@ import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING
     try {
       const response = await axios.post(`${MEMBER_URL}/member/login`, {
         email: email,
-        password: password,
+        password: password
       });
       console.log(response.data.userId);
 

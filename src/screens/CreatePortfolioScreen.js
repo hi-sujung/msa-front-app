@@ -24,7 +24,7 @@ export default function CreatePortfolioScreen() {
   
     try {
       const response = await axios.post(
-        `${SPRING_GATEWAY_URL}/new`,
+        `${SPRING_GATEWAY_URL}/portfolio/new`,
         updatedData,
         { headers }
       );
