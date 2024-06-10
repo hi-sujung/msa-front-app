@@ -5,7 +5,7 @@ import axios from 'axios';
 import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigation } from '@react-navigation/native';
-import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING_GATEWAY_URL } from '@env';
+import { UNIV_NOTICE_URL, EXTERN_NOTICE_URL, RECOMMENDED_URL, MEMBER_URL, SPRING_GATEWAY_URL, LOCAL_URL } from '@env';
 
 export default function NoticeScreen() {
   const [attendList, setAttendList] = useState([]);
@@ -36,7 +36,7 @@ export default function NoticeScreen() {
 
   const createAutoPortfolio = async () => {
     try {
-      const response = await axios.post(`${SPRING_GATEWAY_URL}/notice/portfolio/create-by-ai?careerField=${careerKeyword}&title=${portfolioTitle}`, { headers });
+      const response = await axios.post(`${LOCAL_URL}/notice/portfolio/create-by-ai?careerField=${careerKeyword}&title=${portfolioTitle}`, { headers });
       if (response.status === 200) {
         console.log("포트폴리오 자동 생성 완료");
       }

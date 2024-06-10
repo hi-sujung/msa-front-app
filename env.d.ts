@@ -5,4 +5,5 @@ declare module '@env' {
     export const MEMBER_URL: string;
     export const SPRING_GATEWAY_URL: string;
     export const PORTFOLIO_URL: string;
+    export const LOCAL_URL: string;
 }
